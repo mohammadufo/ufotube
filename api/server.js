@@ -8,18 +8,29 @@ import authRoute from './routes/auth.js'
 
 const app = express()
 dotenv.config()
+app.use(express.json())
 
 const connect = () => {
   mongoose
     .connect(process.env.MONGODB_URI)
     .then(() => console.log('Connected to Database'))
-    .catch((err) => console.log('oh there is an error 💥', err))
+    .catch((err) => console.log('oh! there is an error 💥', err))
 }
 
 app.use('/api/auth', authRoute)
 app.use('/api/users', userRoute)
 app.use('/api/videos', videoRoute)
 app.use('/api/comments', commentRoute)
+
+app.use((err, req, res, next) => {
+  const status = err.status || 500
+  const message = err.message || 'Something went wrong!'
+  return res.status(status).json({
+    success: 'false',
+    status,
+    message,
+  })
+})
 
 const PORT = 8800
 app.listen(PORT, () => {
