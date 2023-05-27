@@ -1,7 +1,9 @@
 import User from '../models/User.js'
 import bcrypt from 'bcryptjs'
+import { createError } from '../utils/customError.js'
+import jwt from 'jsonwebtoken'
 
-export const signIn = async (req, res, next) => {
+export const signUp = async (req, res, next) => {
   try {
     const salt = bcrypt.genSaltSync(10)
     const hash = bcrypt.hashSync(req.body.password, salt)
@@ -15,4 +17,25 @@ export const signIn = async (req, res, next) => {
   } catch (err) {
     next(err)
   }
+}
+
+export const signIn = async (req, res, next) => {
+  try {
+    const user = await User.findOne({ name: req.body.name })
+    if (!user) return next(createError(404, 'User not found'))
+
+    const correctPass = await bcrypt.compare(req.body.password, user.password)
+    if (!correctPass) return next(createError(400, 'wrong credentials'))
+
+    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET)
+    res
+      .cookie('access_token', token, {
+        httpOnly: true,
+      })
+      .status(200)
+      .json({
+        success: true,
+        data: user,
+      })
+  } catch (err) {}
 }

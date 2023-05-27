@@ -5,10 +5,12 @@ import userRoute from './routes/users.js'
 import videoRoute from './routes/videos.js'
 import commentRoute from './routes/comments.js'
 import authRoute from './routes/auth.js'
+import cookieParser from 'cookie-parser'
 
 const app = express()
 dotenv.config()
 app.use(express.json())
+app.use(cookieParser())
 
 const connect = () => {
   mongoose
