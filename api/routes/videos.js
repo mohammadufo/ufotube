@@ -4,6 +4,10 @@ import {
   deleteVideo,
   getVideo,
   updateVideo,
+  addView,
+  trendVideos,
+  subVideos,
+  randomVideos,
 } from '../controllers/video.js'
 import { verifyToken } from '../utils/verifyToken.js'
 
@@ -22,15 +26,15 @@ router.get('/find/:id', getVideo)
 router.delete('/:id', verifyToken, deleteVideo)
 
 //* UPDATE VIEWS OF VIDEO
-router.put('/view/:id')
+router.put('/view/:id', addView)
 
 //* GET TREND VIDEOS
-router.get('/trend')
+router.get('/trend', trendVideos)
 
 //* GET RANDOM VIDEOS
-router.get('/random')
+router.get('/random', randomVideos)
 
 //* SUBSCRIBE CHANNELS VIDEOS
-router.put('/sub')
+router.put('/sub', subVideos)
 
 export default router
