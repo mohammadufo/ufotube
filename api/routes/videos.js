@@ -8,6 +8,8 @@ import {
   trendVideos,
   subVideos,
   randomVideos,
+  VideoByTags,
+  VideoByName,
 } from '../controllers/video.js'
 import { verifyToken } from '../utils/verifyToken.js'
 
@@ -36,5 +38,11 @@ router.get('/random', randomVideos)
 
 //* SUBSCRIBE CHANNELS VIDEOS
 router.get('/sub', verifyToken, subVideos)
+
+//* GET VIDEO WITH TAGS
+router.get('/tags', VideoByTags)
+
+//* GET VIDEO BY NAME
+router.get('/search', VideoByName)
 
 export default router

@@ -64,6 +64,7 @@ export const getVideo = async (req, res, next) => {
     next(err)
   }
 }
+
 export const addView = async (req, res, next) => {
   try {
     await Video.findByIdAndUpdate(req.params.id, {
@@ -77,6 +78,7 @@ export const addView = async (req, res, next) => {
     next(err)
   }
 }
+
 export const trendVideos = async (req, res, next) => {
   try {
     const videos = await Video.find().sort({ views: -1 })
@@ -86,6 +88,7 @@ export const trendVideos = async (req, res, next) => {
     next(err)
   }
 }
+
 export const randomVideos = async (req, res, next) => {
   try {
     const videos = await Video.aggregate([{ $sample: { size: 40 } }])
@@ -95,6 +98,7 @@ export const randomVideos = async (req, res, next) => {
     next(err)
   }
 }
+
 export const subVideos = async (req, res, next) => {
   try {
     const user = await User.findById(req.user.id)
@@ -104,12 +108,40 @@ export const subVideos = async (req, res, next) => {
       subscribedChannels.map((channelId) => Video.find({ userId: channelId }))
     )
 
-    res
-      .status(200)
-      .json({
-        success: true,
-        data: list.flat().sort((a, b) => b.createdAt - a.createdAt),
-      })
+    res.status(200).json({
+      success: true,
+      data: list.flat().sort((a, b) => b.createdAt - a.createdAt),
+    })
+  } catch (err) {
+    next(err)
+  }
+}
+
+export const VideoByTags = async (req, res, next) => {
+  const tags = req.query.tags.split(',')
+  try {
+    const videos = await Video.find({ tags: { $in: tags } }).limit(20)
+
+    res.status(200).json({
+      success: true,
+      data: videos,
+    })
+  } catch (err) {
+    next(err)
+  }
+}
+
+export const VideoByName = async (req, res, next) => {
+  const query = req.query.q
+  try {
+    const videos = await Video.find({
+      title: { $regex: query, $options: 'i' },
+    }).limit(40)
+
+    res.status(200).json({
+      success: true,
+      data: videos,
+    })
   } catch (err) {
     next(err)
   }
