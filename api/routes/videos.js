@@ -35,6 +35,6 @@ router.get('/trend', trendVideos)
 router.get('/random', randomVideos)
 
 //* SUBSCRIBE CHANNELS VIDEOS
-router.put('/sub', subVideos)
+router.get('/sub', verifyToken, subVideos)
 
 export default router

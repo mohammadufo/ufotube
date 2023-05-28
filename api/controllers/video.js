@@ -1,3 +1,4 @@
+import User from '../models/User.js'
 import Video from '../models/Video.js'
 import { createError } from '../utils/customError.js'
 
@@ -96,10 +97,19 @@ export const randomVideos = async (req, res, next) => {
 }
 export const subVideos = async (req, res, next) => {
   try {
-    const video = await Video.findById(req.params.id)
-    if (!video) return next(createError(404, 'video not found'))
+    const user = await User.findById(req.user.id)
+    const subscribedChannels = user.subscribedUsers
 
-    res.status(200).json({ success: true, data: video })
+    const list = await Promise.all(
+      subscribedChannels.map((channelId) => Video.find({ userId: channelId }))
+    )
+
+    res
+      .status(200)
+      .json({
+        success: true,
+        data: list.flat().sort((a, b) => b.createdAt - a.createdAt),
+      })
   } catch (err) {
     next(err)
   }
