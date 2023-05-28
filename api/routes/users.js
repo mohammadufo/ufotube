@@ -23,8 +23,8 @@ router.put('/sub/:id', verifyToken, subscribeUser)
 //* UNSUBSCRIBE USER
 router.put('/unsub/:id', verifyToken, unSubscribeUser)
 //* LIKE VIDEO
-router.put('/like/:videoid', verifyToken, like)
+router.put('/like/:videoId', verifyToken, like)
 //* DISLIKE VIDEO
-router.put('/like/:videoid', verifyToken, disLike)
+router.put('/dislike/:videoId', verifyToken, disLike)
 
 export default router
