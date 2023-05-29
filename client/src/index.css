@@ -21,3 +21,12 @@
   padding: 0;
   box-sizing: inherit;
 }
+
+.search-box {
+  position: relative;
+}
+
+.search-icon {
+  position: absolute;
+  right: 1rem;
+}

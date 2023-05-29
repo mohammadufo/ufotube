@@ -20,17 +20,17 @@ import { Link } from 'react-router-dom'
 
 const Container = styled.div`
   flex: 1.3;
-  min-width: 13rem;
+  min-width: 11.3rem;
   background-color: ${({ theme }) => theme.bgLighter};
   height: 100vh;
   color: ${({ theme }) => theme.text};
   font-size: 14px;
   overflow: scroll;
   top: 0;
-`
-const Wrapper = styled.div`
   padding: 18px 26px;
 `
+
+const Wrapper = styled.div``
 const Logo = styled.div`
   display: flex;
   align-items: center;

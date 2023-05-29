@@ -2,12 +2,14 @@ import styled from 'styled-components'
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined'
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined'
 import { Link } from 'react-router-dom'
+import { TextField, IconButton, Paper } from '@mui/material'
 
 const Container = styled.div`
   position: sticky;
   top: 0;
   background-color: ${({ theme }) => theme.bgLighter};
   height: 56px;
+  margin-top: 5px;
 `
 
 const Wrapper = styled.div`
@@ -29,15 +31,6 @@ const Search = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 5px;
-  border: 1px solid #ccc;
-  border-radius: 3px;
-`
-
-const Input = styled.input`
-  border: none;
-  background-color: transparent;
-  outline: none;
-  color: ${({ theme }) => theme.text};
 `
 
 const Button = styled.button`
@@ -57,8 +50,16 @@ const Navbar = () => {
     <Container>
       <Wrapper>
         <Search>
-          <Input placeholder="Search" />
-          <SearchOutlinedIcon />
+          <TextField
+            className="search-box"
+            size="small"
+            id="outlined-basic"
+            label="Search"
+            variant="outlined"
+            fullWidth
+          />
+
+          <SearchOutlinedIcon className="search-icon" />
         </Search>
         <Link to="signin" style={{ textDecoration: 'none' }}>
           <Button>
