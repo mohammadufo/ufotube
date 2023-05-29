@@ -19,12 +19,13 @@ import SettingsBrightnessOutlinedIcon from '@mui/icons-material/SettingsBrightne
 import { Link } from 'react-router-dom'
 
 const Container = styled.div`
-  flex: 1;
+  flex: 1.3;
+  min-width: 13rem;
   background-color: ${({ theme }) => theme.bgLighter};
   height: 100vh;
   color: ${({ theme }) => theme.text};
   font-size: 14px;
-  position: sticky;
+  overflow: scroll;
   top: 0;
 `
 const Wrapper = styled.div`
@@ -81,6 +82,8 @@ const Title = styled.h2`
   margin-bottom: 20px;
 `
 
+const Body = styled.div``
+
 const Menu = ({ darkMode, setDarkMode }) => {
   return (
     <Container>
@@ -91,80 +94,82 @@ const Menu = ({ darkMode, setDarkMode }) => {
             UFOTUBE
           </Logo>
         </Link>
-        <Item>
-          <HomeIcon />
-          Home
-        </Item>
-        <Item>
-          <ExploreOutlinedIcon />
-          Explore
-        </Item>
-        <Item>
-          <SubscriptionsOutlinedIcon />
-          Subscriptions
-        </Item>
-        <Hr />
-        <Item>
-          <VideoLibraryOutlinedIcon />
-          Library
-        </Item>
-        <Item>
-          <HistoryOutlinedIcon />
-          History
-        </Item>
-        <Hr />
-        <Login>
-          Sign in to like videos, comment, and subscribe.
-          <Link to="signin" style={{ textDecoration: 'none' }}>
-            <Button>
-              <AccountCircleOutlinedIcon />
-              SIGN IN
-            </Button>
-          </Link>
-        </Login>
-        <Hr />
-        <Title>BEST OF UFOTUBE</Title>
-        <Item>
-          <LibraryMusicOutlinedIcon />
-          Music
-        </Item>
-        <Item>
-          <SportsBasketballOutlinedIcon />
-          Sports
-        </Item>
-        <Item>
-          <SportsEsportsOutlinedIcon />
-          Gaming
-        </Item>
-        <Item>
-          <MovieOutlinedIcon />
-          Movies
-        </Item>
-        <Item>
-          <ArticleOutlinedIcon />
-          News
-        </Item>
-        <Item>
-          <LiveTvOutlinedIcon />
-          Live
-        </Item>
-        <Hr />
-        <Item>
-          <SettingsOutlinedIcon />
-          Settings
-        </Item>
-        <Item>
-          <FlagOutlinedIcon />
-          Report
-        </Item>
-        <Item>
-          <HelpOutlineOutlinedIcon />
-          Help
-        </Item>
-        <Item onClick={() => setDarkMode(!darkMode)}>
-          <SettingsBrightnessOutlinedIcon />
-          {darkMode ? 'Light' : 'Dark'} Mode
-        </Item>
+        <Body>
+          <Item>
+            <HomeIcon />
+            Home
+          </Item>
+          <Item>
+            <ExploreOutlinedIcon />
+            Explore
+          </Item>
+          <Item>
+            <SubscriptionsOutlinedIcon />
+            Subscriptions
+          </Item>
+          <Hr />
+          <Item>
+            <VideoLibraryOutlinedIcon />
+            Library
+          </Item>
+          <Item>
+            <HistoryOutlinedIcon />
+            History
+          </Item>
+          <Hr />
+          <Login>
+            Sign in to like videos, comment, and subscribe.
+            <Link to="signin" style={{ textDecoration: 'none' }}>
+              <Button>
+                <AccountCircleOutlinedIcon />
+                SIGN IN
+              </Button>
+            </Link>
+          </Login>
+          <Hr />
+          <Title>BEST OF UFOTUBE</Title>
+          <Item>
+            <LibraryMusicOutlinedIcon />
+            Music
+          </Item>
+          <Item>
+            <SportsBasketballOutlinedIcon />
+            Sports
+          </Item>
+          <Item>
+            <SportsEsportsOutlinedIcon />
+            Gaming
+          </Item>
+          <Item>
+            <MovieOutlinedIcon />
+            Movies
+          </Item>
+          <Item>
+            <ArticleOutlinedIcon />
+            News
+          </Item>
+          <Item>
+            <LiveTvOutlinedIcon />
+            Live
+          </Item>
+          <Hr />
+          <Item>
+            <SettingsOutlinedIcon />
+            Settings
+          </Item>
+          <Item>
+            <FlagOutlinedIcon />
+            Report
+          </Item>
+          <Item>
+            <HelpOutlineOutlinedIcon />
+            Help
+          </Item>
+          <Item onClick={() => setDarkMode(!darkMode)}>
+            <SettingsBrightnessOutlinedIcon />
+            {darkMode ? 'Light' : 'Dark'} Mode
+          </Item>
+        </Body>
       </Wrapper>
     </Container>
   )

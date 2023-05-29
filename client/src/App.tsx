@@ -7,6 +7,8 @@ import { Outlet } from 'react-router-dom'
 
 const Container = styled.div`
   display: flex;
+  height: 100vh;
+  overflow-y: hidden;
 `
 
 const Main = styled.div`
