@@ -14,6 +14,7 @@ const Container = styled.div`
   display: flex;
   height: 100vh;
   overflow-y: hidden;
+  position: relative;
 `
 
 const Main = styled.div`
@@ -21,11 +22,12 @@ const Main = styled.div`
   background-color: ${({ theme }) => theme.bg};
 `
 const Wrapper = styled.div`
-  padding: 22px 44px;
+  /* padding: 22px 44px; */
 `
 
 function App() {
   const [darkMode, setDarkMode] = useState(true)
+  const [showMenu, setShowMenu] = useState(false)
 
   const theme = createTheme({
     palette: {
@@ -38,10 +40,15 @@ function App() {
       <MuiThemeProvider theme={theme}>
         <CssBaseline />
         <Container>
-          <Menu darkMode={darkMode} setDarkMode={setDarkMode} />
+          <Menu
+            showMenu={showMenu}
+            setShowMenu={setShowMenu}
+            darkMode={darkMode}
+            setDarkMode={setDarkMode}
+          />
           <Main>
-            <Navbar />
-            <Wrapper>
+            <Navbar showMenu={showMenu} setShowMenu={setShowMenu} />
+            <Wrapper onClick={() => setShowMenu(false)}>
               <Outlet />
             </Wrapper>
           </Main>

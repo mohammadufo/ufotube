@@ -18,6 +18,7 @@ import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined'
 import SettingsBrightnessOutlinedIcon from '@mui/icons-material/SettingsBrightnessOutlined'
 import { Link } from 'react-router-dom'
 import { Button } from '@mui/material'
+import { phone } from '../../utils/responsive'
 
 const Container = styled.div`
   flex: 1;
@@ -29,6 +30,15 @@ const Container = styled.div`
   overflow: scroll;
   top: 0;
   padding: 18px 26px;
+  transition: all 0.3s ease;
+
+  ${phone({
+    position: 'absolute',
+    // left: '-13rem',
+    zIndex: '100',
+    width: '13rem',
+    flex: 2,
+  })};
 `
 
 const Wrapper = styled.div``
@@ -76,9 +86,11 @@ const Title = styled.h2`
 
 const Body = styled.div``
 
-const Menu = ({ darkMode, setDarkMode }) => {
+const Menu = ({ darkMode, setDarkMode, showMenu }) => {
   return (
-    <Container>
+    <Container
+      className={`${showMenu ? 'visible-menu' : 'hidden-menu'} menu-container`}
+    >
       <Wrapper>
         <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
           <Logo>

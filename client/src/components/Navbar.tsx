@@ -1,8 +1,16 @@
 import styled from 'styled-components'
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined'
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined'
+import MenuIcon from '@mui/icons-material/Menu'
 import { Link } from 'react-router-dom'
-import { InputBase, styled as muiStyled, alpha, Button } from '@mui/material'
+import { phone } from '../../utils/responsive'
+import {
+  InputBase,
+  styled as muiStyled,
+  alpha,
+  Button,
+  IconButton,
+} from '@mui/material'
 
 const Container = styled.div`
   position: sticky;
@@ -15,15 +23,13 @@ const Container = styled.div`
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
   height: 100%;
   padding: 0px 20px;
-  position: relative;
 `
 
 const SearchBox = styled.div`
   width: 40%;
-  position: absolute;
   left: 0px;
   right: 0px;
   margin: auto;
@@ -74,11 +80,22 @@ const StyledInputBase = muiStyled(InputBase)(({ theme }) => ({
   },
 }))
 
-const Navbar = () => {
+const Hambergure = styled.div`
+  display: none;
+
+  ${phone({ display: 'block' })}
+`
+
+const Navbar = ({ showMenu, setShowMenu }) => {
   return (
     <Container>
       <Wrapper>
-        <SearchBox>
+        <Hambergure onClick={() => setShowMenu(true)}>
+          <IconButton aria-label="delete" disabled color="primary">
+            <MenuIcon sx={{ fontSize: '30px', color: '#fff' }} />
+          </IconButton>
+        </Hambergure>
+        <SearchBox onClick={() => setShowMenu(false)}>
           <Search>
             <SearchIconWrapper>
               <SearchOutlinedIcon />
@@ -89,7 +106,11 @@ const Navbar = () => {
             />
           </Search>
         </SearchBox>
-        <Link to="signin" style={{ textDecoration: 'none' }}>
+        <Link
+          to="signin"
+          style={{ textDecoration: 'none' }}
+          onClick={() => setShowMenu(false)}
+        >
           <Button variant="outlined" startIcon={<AccountCircleOutlinedIcon />}>
             SIGN IN
           </Button>

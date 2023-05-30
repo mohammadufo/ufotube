@@ -30,3 +30,11 @@
   position: absolute;
   right: 1rem;
 }
+
+.hidden-menu {
+  left: -13rem;
+}
+
+.visible-menu {
+  left: 0;
+}

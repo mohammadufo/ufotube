@@ -12,6 +12,7 @@ const Container = styled.div`
   overflow-y: scroll !important;
   margin-bottom: 5rem;
   padding-bottom: 10rem;
+  padding: 22px 44px;
 `
 
 const Home = () => {

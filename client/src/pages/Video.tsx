@@ -6,10 +6,13 @@ import ReplyOutlinedIcon from '@mui/icons-material/ReplyOutlined'
 import AddTaskOutlinedIcon from '@mui/icons-material/AddTaskOutlined'
 import Comments from '../components/Comments'
 import CardComponent from '../components/CardComponent'
+import { phone } from '../../utils/responsive'
 
 const Container = styled.div`
   display: flex;
   gap: 24px;
+  height: 100vh !important;
+  overflow-y: scroll !important;
 `
 
 const Content = styled.div`
@@ -55,6 +58,14 @@ const Hr = styled.hr`
 
 const Recommendation = styled.div`
   flex: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  height: 80vh !important;
+  overflow-y: scroll !important;
+
+  ${phone({ display: 'none' })}
 `
 const Channel = styled.div`
   display: flex;
@@ -111,7 +122,7 @@ const Video = () => {
         <VideoWrapper>
           <iframe
             width="100%"
-            height="720"
+            height="auto"
             src="https://youtu.be/bLef1wGJrD4"
             title="YouTube video player"
             frameBorder="0"
@@ -119,6 +130,7 @@ const Video = () => {
             allowFullScreen
           ></iframe>
         </VideoWrapper>
+
         <Title>Test Video</Title>
         <Details>
           <Info>7,948,154 views • 24 May, 2023</Info>
