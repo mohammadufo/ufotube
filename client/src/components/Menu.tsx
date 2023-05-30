@@ -17,10 +17,11 @@ import FlagOutlinedIcon from '@mui/icons-material/FlagOutlined'
 import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined'
 import SettingsBrightnessOutlinedIcon from '@mui/icons-material/SettingsBrightnessOutlined'
 import { Link } from 'react-router-dom'
+import { Button } from '@mui/material'
 
 const Container = styled.div`
-  flex: 1.3;
-  min-width: 11.3rem;
+  flex: 1;
+  min-width: 10rem;
   background-color: ${({ theme }) => theme.bgLighter};
   height: 100vh;
   color: ${({ theme }) => theme.text};
@@ -60,19 +61,10 @@ const Hr = styled.hr`
   border: 0.5px solid ${({ theme }) => theme.soft};
 `
 
-const Login = styled.div``
-const Button = styled.button`
-  padding: 5px 15px;
-  background-color: transparent;
-  border: 1px solid #3ea6ff;
-  color: #3ea6ff;
-  border-radius: 3px;
-  font-weight: 500;
-  margin-top: 10px;
-  cursor: pointer;
+const Login = styled.div`
   display: flex;
-  align-items: center;
-  gap: 5px;
+  flex-direction: column;
+  gap: 1rem;
 `
 
 const Title = styled.h2`
@@ -120,8 +112,10 @@ const Menu = ({ darkMode, setDarkMode }) => {
           <Login>
             Sign in to like videos, comment, and subscribe.
             <Link to="signin" style={{ textDecoration: 'none' }}>
-              <Button>
-                <AccountCircleOutlinedIcon />
+              <Button
+                variant="outlined"
+                startIcon={<AccountCircleOutlinedIcon />}
+              >
                 SIGN IN
               </Button>
             </Link>

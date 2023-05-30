@@ -1,37 +1,33 @@
 import styled from 'styled-components'
-import Card from '../components/Card'
+import CardComponent from '../components/CardComponent'
 
 const Container = styled.div`
   display: flex;
-  height: 100vh;
   justify-content: space-between;
+  gap: 2rem;
   flex-wrap: wrap;
-  overflow-y: scroll;
+
+  width: 100%;
+  height: 100vh !important;
+  overflow-y: scroll !important;
+  margin-bottom: 5rem;
+  padding-bottom: 10rem;
 `
 
 const Home = () => {
   return (
     <Container>
-      <Card />
-      <Card />
-      <Card />
-      <Card />
-      <Card />
-      <Card />
-      <Card />
-      <Card />
-      <Card />
-      <Card />
-      <Card />
-      <Card />
-      <Card />
-      <Card />
-      <Card />
-      <Card />
-      <Card />
-      <Card />
-      <Card />
-      <Card />
+      <CardComponent />
+      <CardComponent />
+      <CardComponent />
+      <CardComponent />
+      <CardComponent />
+      <CardComponent />
+      <CardComponent />
+      <CardComponent />
+      <CardComponent />
+      <CardComponent />
+      <CardComponent />
     </Container>
   )
 }

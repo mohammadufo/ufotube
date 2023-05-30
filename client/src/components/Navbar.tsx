@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined'
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined'
 import { Link } from 'react-router-dom'
-import { TextField, IconButton, Paper } from '@mui/material'
+import { InputBase, styled as muiStyled, alpha, Button } from '@mui/material'
 
 const Container = styled.div`
   position: sticky;
@@ -21,7 +21,7 @@ const Wrapper = styled.div`
   position: relative;
 `
 
-const Search = styled.div`
+const SearchBox = styled.div`
   width: 40%;
   position: absolute;
   left: 0px;
@@ -33,37 +33,64 @@ const Search = styled.div`
   padding: 5px;
 `
 
-const Button = styled.button`
-  padding: 5px 15px;
-  background-color: transparent;
-  border: 1px solid #3ea6ff;
-  color: #3ea6ff;
-  border-radius: 3px;
-  font-weight: 500;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-`
+const Search = muiStyled('div')(({ theme }) => ({
+  position: 'relative',
+  borderRadius: theme.shape.borderRadius,
+  backgroundColor: alpha(theme.palette.common.white, 0.15),
+  '&:hover': {
+    backgroundColor: alpha(theme.palette.common.white, 0.25),
+  },
+  marginLeft: 0,
+  width: '100%',
+  [theme.breakpoints.up('sm')]: {
+    marginLeft: theme.spacing(1),
+    width: 'auto',
+  },
+}))
+
+const SearchIconWrapper = muiStyled('div')(({ theme }) => ({
+  padding: theme.spacing(0, 2),
+  height: '100%',
+  position: 'absolute',
+  pointerEvents: 'none',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+}))
+
+const StyledInputBase = muiStyled(InputBase)(({ theme }) => ({
+  color: 'inherit',
+  '& .MuiInputBase-input': {
+    padding: theme.spacing(1, 1, 1, 0),
+    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+    transition: theme.transitions.create('width'),
+    width: '100%',
+    [theme.breakpoints.up('sm')]: {
+      width: '12ch',
+      '&:focus': {
+        width: '25ch',
+      },
+    },
+  },
+}))
+
 const Navbar = () => {
   return (
     <Container>
       <Wrapper>
-        <Search>
-          <TextField
-            className="search-box"
-            size="small"
-            id="outlined-basic"
-            label="Search"
-            variant="outlined"
-            fullWidth
-          />
-
-          <SearchOutlinedIcon className="search-icon" />
-        </Search>
+        <SearchBox>
+          <Search>
+            <SearchIconWrapper>
+              <SearchOutlinedIcon />
+            </SearchIconWrapper>
+            <StyledInputBase
+              placeholder="Search…"
+              inputProps={{ 'aria-label': 'search' }}
+            />
+          </Search>
+        </SearchBox>
         <Link to="signin" style={{ textDecoration: 'none' }}>
-          <Button>
-            <AccountCircleOutlinedIcon />
+          <Button variant="outlined" startIcon={<AccountCircleOutlinedIcon />}>
             SIGN IN
           </Button>
         </Link>
