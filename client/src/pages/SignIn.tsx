@@ -1,5 +1,16 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
+import {
+  TextField,
+  InputAdornment,
+  IconButton,
+  FormControl,
+  InputLabel,
+  OutlinedInput,
+  Button,
+} from '@mui/material'
+import Visibility from '@mui/icons-material/Visibility'
+import VisibilityOff from '@mui/icons-material/VisibilityOff'
 
 const Container = styled.div`
   display: flex;
@@ -38,15 +49,15 @@ const Input = styled.input`
   color: ${({ theme }) => theme.text};
 `
 
-const Button = styled.button`
-  border-radius: 3px;
-  border: none;
-  padding: 10px 20px;
-  font-weight: 500;
-  cursor: pointer;
-  background-color: ${({ theme }) => theme.soft};
-  color: ${({ theme }) => theme.textSoft};
-`
+// const Button = styled.button`
+//   border-radius: 3px;
+//   border: none;
+//   padding: 10px 20px;
+//   font-weight: 500;
+//   cursor: pointer;
+//   background-color: ${({ theme }) => theme.soft};
+//   color: ${({ theme }) => theme.textSoft};
+// `
 
 const More = styled.div`
   display: flex;
@@ -64,19 +75,72 @@ const Link = styled.span`
 `
 
 const SignIn = () => {
+  const [showPassword, setShowPassword] = useState(false)
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show)
+  const handleMouseDownPassword = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.preventDefault()
+  }
+
   return (
     <Container>
       <Wrapper>
         <Title>Sign in</Title>
         <SubTitle>to continue to UFOTUBE</SubTitle>
-        <Input placeholder="username" />
-        <Input type="password" placeholder="password" />
-        <Button>Sign in</Button>
+        <TextField label="username" variant="outlined" size="small" fullWidth />
+        <FormControl variant="outlined" size="small">
+          <InputLabel htmlFor="outlined-adornment-password">
+            Password
+          </InputLabel>
+          <OutlinedInput
+            fullWidth
+            id="outlined-adornment-password"
+            type={showPassword ? 'text' : 'password'}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowPassword}
+                  onMouseDown={handleMouseDownPassword}
+                  edge="end"
+                >
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            }
+            label="Password"
+          />
+        </FormControl>
+        <Button variant="outlined">Sign In</Button>
         <Title>or</Title>
-        <Input placeholder="username" />
-        <Input placeholder="email" />
-        <Input type="password" placeholder="password" />
-        <Button>Sign up</Button>
+        <TextField label="username" variant="outlined" size="small" fullWidth />
+        <TextField label="email" variant="outlined" size="small" fullWidth />
+        <FormControl variant="outlined" size="small">
+          <InputLabel htmlFor="outlined-adornment-password">
+            Password
+          </InputLabel>
+          <OutlinedInput
+            fullWidth
+            id="outlined-adornment-password"
+            type={showPassword ? 'text' : 'password'}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowPassword}
+                  onMouseDown={handleMouseDownPassword}
+                  edge="end"
+                >
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            }
+            label="Password"
+          />
+        </FormControl>
+        <Button variant="outlined">Sign Up</Button>
       </Wrapper>
       <More>
         English(USA)
