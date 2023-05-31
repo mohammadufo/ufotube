@@ -6,13 +6,14 @@ import ReplyOutlinedIcon from '@mui/icons-material/ReplyOutlined'
 import AddTaskOutlinedIcon from '@mui/icons-material/AddTaskOutlined'
 import Comments from '../components/Comments'
 import CardComponent from '../components/CardComponent'
-import { phone } from '../../utils/responsive'
+import { phone } from '../utils/responsive'
 
 const Container = styled.div`
   display: flex;
   gap: 24px;
   height: 100vh !important;
   overflow-y: scroll !important;
+  padding: 22px 44px;
 `
 
 const Content = styled.div`

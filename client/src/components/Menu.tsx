@@ -18,7 +18,7 @@ import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined'
 import SettingsBrightnessOutlinedIcon from '@mui/icons-material/SettingsBrightnessOutlined'
 import { Link } from 'react-router-dom'
 import { Button } from '@mui/material'
-import { phone } from '../../utils/responsive'
+import { phone } from '../utils/responsive'
 
 const Container = styled.div`
   flex: 1;

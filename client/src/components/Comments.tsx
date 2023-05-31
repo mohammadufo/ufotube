@@ -1,8 +1,9 @@
-import React from 'react'
 import styled from 'styled-components'
 import Comment from './Comment'
 
-const Container = styled.div``
+const Container = styled.div`
+  padding-bottom: 5rem;
+`
 
 const NewComment = styled.div`
   display: flex;
