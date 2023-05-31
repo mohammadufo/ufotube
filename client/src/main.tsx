@@ -15,7 +15,9 @@ import Video from './pages/Video'
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
-      <Route index={true} element={<Home />} />
+      <Route index={true} element={<Home type="random" />} />
+      <Route path="trends" element={<Home type="trend" />} />
+      <Route path="subscriptions" element={<Home type="sub" />} />
       <Route path="signin" element={<SignIn />} />
       <Route path="video">
         <Route path=":id" element={<Video />} />

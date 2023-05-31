@@ -3,6 +3,7 @@ import CardComponent from '../components/CardComponent'
 import { useEffect, useState } from 'react'
 import { publicService } from '../services/publicRequest'
 import HomeLoading from '../components/HomeLoading'
+import { Video } from '../types/public'
 
 const Container = styled.div`
   display: flex;
@@ -18,14 +19,19 @@ const Container = styled.div`
   padding: 22px 44px;
 `
 
-const Home = () => {
+const Home = (props: { type?: string }) => {
   const [videos, setVideos] = useState([])
   const [loading, setLoading] = useState(false)
 
   const fetchData = async () => {
     try {
       setLoading(true)
-      const res = await publicService.api('GET', '/videos/random', {}, {})
+      const res = await publicService.api(
+        'GET',
+        `/videos/${props.type}`,
+        {},
+        {}
+      )
       setVideos(res.data)
       console.log(res.data)
       setLoading(false)
@@ -37,7 +43,7 @@ const Home = () => {
 
   useEffect(() => {
     fetchData()
-  }, [])
+  }, [props.type])
 
   return (
     <Container>
@@ -45,9 +51,9 @@ const Home = () => {
         <HomeLoading />
       ) : (
         <>
-          {videos?.map((video) => (
+          {videos?.map((video: Video) => (
             <div key={video._id}>
-              <CardComponent />
+              <CardComponent video={video} />
             </div>
           ))}
         </>

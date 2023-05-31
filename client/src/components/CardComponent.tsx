@@ -1,10 +1,13 @@
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import Test from '../img/test.jpg'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 import CardMedia from '@mui/material/CardMedia'
 import { Avatar, CardActionArea, Box } from '@mui/material'
+import { Video } from '../types/public'
+import { format } from 'timeago.js'
+import { useEffect, useState } from 'react'
+import { publicService } from '../services/publicRequest'
 
 const Title = styled.h1`
   font-size: 16px;
@@ -36,10 +39,31 @@ const Desc = styled.div`
   gap: 5px;
 `
 
-const CardComponent = ({ type }) => {
+const CardComponent = (props: { type?: string; video: Video }) => {
+  const [user, setUser] = useState({})
+
+  const fetchData = async () => {
+    try {
+      const res = await publicService.api(
+        'GET',
+        `users/find/${props.video.userId}`,
+        {},
+        {}
+      )
+
+      setUser(res.data)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  useEffect(() => {
+    fetchData()
+  }, [props?.video?.userId])
+
   return (
     <>
-      {type === 'sm' ? (
+      {props.type === 'sm' ? (
         <Link
           to="/video/test"
           style={{ textDecoration: 'none', color: 'inherit' }}
@@ -49,7 +73,7 @@ const CardComponent = ({ type }) => {
               <CardMedia
                 component="img"
                 sx={{ width: 151 }}
-                image={Test}
+                image={''}
                 alt="Live from space album cover"
               />
               <Box sx={{ display: 'flex', flexDirection: 'column' }}>
@@ -71,31 +95,31 @@ const CardComponent = ({ type }) => {
         <>
           <Card sx={{ width: 300, height: 240 }}>
             <Link
-              to="/video/test"
+              to={`/video/${props.video._id}`}
               style={{ textDecoration: 'none', color: 'inherit' }}
             >
               <CardActionArea>
                 <CardMedia
                   sx={{ height: 140 }}
-                  image={Test}
+                  image={props.video.imgUrl}
                   title="green iguana"
                 />
                 <CardContent>
                   <CardContent sx={{ padding: 0 }}>
                     <CardWrapper>
                       <AvatarImg>
-                        <Avatar
-                          src="https://avatars.githubusercontent.com/u/90573543?v=4"
-                          aria-label="recipe"
-                        >
-                          R
+                        <Avatar src={user.img} aria-label="recipe">
+                          {user.name}
                         </Avatar>
                       </AvatarImg>
 
                       <Desc>
-                        <Title>Test Video</Title>
-                        <ChannelName>Muhammad UFO</ChannelName>
-                        <Info>660,908 views • 1 day ago</Info>
+                        <Title>{props.video.title}</Title>
+                        <ChannelName>{user.name}</ChannelName>
+                        <Info>
+                          {props.video.views} views •
+                          {format(props.video.createdAt)}
+                        </Info>
                       </Desc>
                     </CardWrapper>
                   </CardContent>
