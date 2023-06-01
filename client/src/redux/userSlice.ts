@@ -20,9 +20,7 @@ export interface UserSlice {
 }
 
 const initialState: UserSlice = {
-  currentUser: localStorage.getItem('user')
-    ? JSON.parse(localStorage.getItem('user')!)
-    : null,
+  currentUser: null,
   loading: false,
   registerLoading: false,
   error: false,
@@ -38,7 +36,7 @@ export const userSlice = createSlice({
     loginSuccess: (state, action: PayloadAction<User>) => {
       state.loading = false
       state.currentUser = action.payload
-      localStorage.setItem('user', JSON.stringify(action.payload))
+      // localStorage.setItem('user', JSON.stringify(action.payload))
     },
     loginFailure: (state) => {
       state.loading = false
@@ -50,7 +48,7 @@ export const userSlice = createSlice({
     registerSuccess: (state, action: PayloadAction<User>) => {
       state.registerLoading = false
       state.currentUser = action.payload
-      localStorage.setItem('user', JSON.stringify(action.payload))
+      // localStorage.setItem('user', JSON.stringify(action.payload))
     },
     registerFailure: (state) => {
       state.registerLoading = false
@@ -61,7 +59,7 @@ export const userSlice = createSlice({
       state.error = false
       state.currentUser = null
       state.registerLoading = false
-      localStorage.removeItem('user')
+      localStorage.removeItem('persist:root')
     },
   },
 })
