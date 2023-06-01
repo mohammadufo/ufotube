@@ -1,16 +1,25 @@
 import styled from 'styled-components'
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined'
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined'
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
+import LogoutIcon from '@mui/icons-material/Logout'
 import MenuIcon from '@mui/icons-material/Menu'
 import { Link } from 'react-router-dom'
 import { phone } from '../utils/responsive'
+import { useSelector, useDispatch } from 'react-redux'
 import {
   InputBase,
   styled as muiStyled,
   alpha,
   Button,
   IconButton,
+  Avatar,
+  Typography,
+  Menu,
+  MenuItem,
 } from '@mui/material'
+import { useState } from 'react'
+import { logout } from '../redux/userSlice'
 
 const Container = styled.div`
   position: sticky;
@@ -86,7 +95,32 @@ const Hambergure = styled.div`
   ${phone({ display: 'block' })}
 `
 
+const UserWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: 0.5rem;
+`
+
 const Navbar = ({ showMenu, setShowMenu }) => {
+  const { currentUser } = useSelector((state) => state.user)
+  const dispatch = useDispatch()
+  console.log(currentUser)
+
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+  const open = Boolean(anchorEl)
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget)
+  }
+  const handleClose = () => {
+    setAnchorEl(null)
+  }
+
+  const handleLogout = () => {
+    dispatch(logout())
+    handleClose()
+  }
+
   return (
     <Container>
       <Wrapper>
@@ -106,15 +140,53 @@ const Navbar = ({ showMenu, setShowMenu }) => {
             />
           </Search>
         </SearchBox>
-        <Link
-          to="signin"
-          style={{ textDecoration: 'none' }}
-          onClick={() => setShowMenu(false)}
-        >
-          <Button variant="outlined" startIcon={<AccountCircleOutlinedIcon />}>
-            SIGN IN
-          </Button>
-        </Link>
+        {currentUser ? (
+          <UserWrapper>
+            <Avatar
+              src={currentUser.img ? currentUser.img : null}
+              sx={{ bgcolor: 'teal' }}
+            >
+              {currentUser.name.split('')[0].toUpperCase()}
+            </Avatar>
+            <Typography>{currentUser.name}</Typography>
+            <IconButton
+              id="basic-button"
+              aria-controls={open ? 'basic-menu' : undefined}
+              aria-haspopup="true"
+              aria-expanded={open ? 'true' : undefined}
+              onClick={handleClick}
+            >
+              <ArrowDropDownIcon />
+            </IconButton>
+            <Menu
+              id="basic-menu"
+              anchorEl={anchorEl}
+              open={open}
+              onClose={handleClose}
+              MenuListProps={{
+                'aria-labelledby': 'basic-button',
+              }}
+            >
+              <MenuItem onClick={handleLogout}>
+                <LogoutIcon />
+                &nbsp;&nbsp; Logout
+              </MenuItem>
+            </Menu>
+          </UserWrapper>
+        ) : (
+          <Link
+            to="signin"
+            style={{ textDecoration: 'none' }}
+            onClick={() => setShowMenu(false)}
+          >
+            <Button
+              variant="outlined"
+              startIcon={<AccountCircleOutlinedIcon />}
+            >
+              SIGN IN
+            </Button>
+          </Link>
+        )}
       </Wrapper>
     </Container>
   )

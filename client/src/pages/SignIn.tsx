@@ -108,7 +108,7 @@ const SignIn = () => {
 
   const signInformik = useFormik({
     initialValues: initialSignInValue,
-    onSubmit: async (values) => {
+    onSubmit: async (values, { resetForm }) => {
       try {
         dispatch(loginStart())
         const response = await publicService.api(
@@ -118,6 +118,7 @@ const SignIn = () => {
           values
         )
         dispatch(loginSuccess(response.data))
+        resetForm()
         enqueueSnackbar(`Welcome back ${response.data.name} 👋🏻`, {
           variant: 'success',
           anchorOrigin: {
@@ -142,7 +143,7 @@ const SignIn = () => {
   })
   const signUpformik = useFormik({
     initialValues: initialSignUpValue,
-    onSubmit: async (values) => {
+    onSubmit: async (values, { resetForm }) => {
       try {
         dispatch(registerStart())
         const response = await publicService.api(
@@ -152,6 +153,7 @@ const SignIn = () => {
           values
         )
         dispatch(registerSuccess(response.data))
+        resetForm()
         enqueueSnackbar(`Welcome ${response.data.name} 💕`, {
           variant: 'success',
           anchorOrigin: {

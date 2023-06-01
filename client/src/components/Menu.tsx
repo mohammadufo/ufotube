@@ -19,6 +19,7 @@ import SettingsBrightnessOutlinedIcon from '@mui/icons-material/SettingsBrightne
 import { Link } from 'react-router-dom'
 import { Button } from '@mui/material'
 import { phone } from '../utils/responsive'
+import { useSelector } from 'react-redux'
 
 const Container = styled.div`
   flex: 1;
@@ -86,6 +87,8 @@ const Title = styled.h2`
 const Body = styled.div``
 
 const Menu = ({ darkMode, setDarkMode, showMenu }) => {
+  const { currentUser } = useSelector((state) => state.user)
+
   return (
     <Container
       className={`${showMenu ? 'visible-menu' : 'hidden-menu'} menu-container`}
@@ -132,18 +135,22 @@ const Menu = ({ darkMode, setDarkMode, showMenu }) => {
             <HistoryOutlinedIcon />
             History
           </Item>
-          <Hr />
-          <Login>
-            Sign in to like videos, comment, and subscribe.
-            <Link to="signin" style={{ textDecoration: 'none' }}>
-              <Button
-                variant="outlined"
-                startIcon={<AccountCircleOutlinedIcon />}
-              >
-                SIGN IN
-              </Button>
-            </Link>
-          </Login>
+          {!currentUser && (
+            <>
+              <Hr />
+              <Login>
+                Sign in to like videos, comment, and subscribe.
+                <Link to="signin" style={{ textDecoration: 'none' }}>
+                  <Button
+                    variant="outlined"
+                    startIcon={<AccountCircleOutlinedIcon />}
+                  >
+                    SIGN IN
+                  </Button>
+                </Link>
+              </Login>
+            </>
+          )}
           <Hr />
           <Title>BEST OF UFOTUBE</Title>
           <Item>
