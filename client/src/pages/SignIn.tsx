@@ -17,6 +17,15 @@ import { useFormik } from 'formik'
 import { signInSchema, signUpSchema } from '../validations/user'
 import { publicService } from '../services/publicRequest'
 import { enqueueSnackbar } from 'notistack'
+import { useDispatch, useSelector } from 'react-redux'
+import {
+  loginFailure,
+  loginStart,
+  loginSuccess,
+  registerFailure,
+  registerStart,
+  registerSuccess,
+} from '../redux/userSlice'
 
 const Container = styled.div`
   display: flex;
@@ -72,8 +81,10 @@ const Form = styled.form`
 const SignIn = () => {
   const [showPassword, setShowPassword] = useState(false)
   const [showSignUpPassword, setShowSignUpPassword] = useState(false)
-  const [signInLoading, setSignInLoading] = useState(false)
-  const [signUpLoading, setSignUpLoading] = useState(false)
+
+  const dispatch = useDispatch()
+
+  const { registerLoading, loading } = useSelector((state) => state.user)
 
   const handleClickShowPassword = () => setShowPassword((show) => !show)
   const handleMouseDownPassword = (
@@ -99,15 +110,15 @@ const SignIn = () => {
     initialValues: initialSignInValue,
     onSubmit: async (values) => {
       try {
-        setSignInLoading(true)
+        dispatch(loginStart())
         const response = await publicService.api(
           'POST',
           '/auth/signin',
           {},
           values
         )
-        setSignInLoading(false)
-        enqueueSnackbar(`Welcome back ${response.data.name} :)`, {
+        dispatch(loginSuccess(response.data))
+        enqueueSnackbar(`Welcome back ${response.data.name} 👋🏻`, {
           variant: 'success',
           anchorOrigin: {
             horizontal: 'top',
@@ -117,7 +128,7 @@ const SignIn = () => {
         console.log(response.data)
       } catch (err) {
         console.log(err)
-        setSignInLoading(false)
+        dispatch(loginFailure())
         enqueueSnackbar(`oops! something went wrong 💀`, {
           variant: 'error',
           anchorOrigin: {
@@ -133,14 +144,14 @@ const SignIn = () => {
     initialValues: initialSignUpValue,
     onSubmit: async (values) => {
       try {
-        setSignUpLoading(true)
+        dispatch(registerStart())
         const response = await publicService.api(
           'POST',
           '/auth/signup',
           {},
           values
         )
-        setSignUpLoading(false)
+        dispatch(registerSuccess(response.data))
         enqueueSnackbar(`Welcome ${response.data.name} 💕`, {
           variant: 'success',
           anchorOrigin: {
@@ -151,7 +162,7 @@ const SignIn = () => {
         console.log(response.data)
       } catch (err) {
         console.log(err)
-        setSignUpLoading(false)
+        dispatch(registerFailure())
         enqueueSnackbar(`oops! something went wrong 💀`, {
           variant: 'error',
           anchorOrigin: {
@@ -221,7 +232,7 @@ const SignIn = () => {
           </FormControl>
 
           <Button type="submit" variant="outlined">
-            {signInLoading ? <CircularProgress size="1.5rem" /> : 'Sign In'}
+            {loading ? <CircularProgress size="1.5rem" /> : 'Sign In'}
           </Button>
         </Form>
         <Title>or</Title>
@@ -291,7 +302,7 @@ const SignIn = () => {
             ) : null}
           </FormControl>
           <Button variant="outlined" type="submit">
-            {signUpLoading ? <CircularProgress size="1.5rem" /> : 'Sign Up'}
+            {registerLoading ? <CircularProgress size="1.5rem" /> : 'Sign Up'}
           </Button>
         </Form>
       </Wrapper>
