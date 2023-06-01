@@ -22,7 +22,7 @@ import { phone } from '../utils/responsive'
 
 const Container = styled.div`
   flex: 1;
-  min-width: 10rem;
+  min-width: 12rem;
   background-color: ${({ theme }) => theme.bgLighter};
   height: 100vh;
   color: ${({ theme }) => theme.text};
@@ -34,7 +34,6 @@ const Container = styled.div`
 
   ${phone({
     position: 'absolute',
-    // left: '-13rem',
     zIndex: '100',
     width: '13rem',
     flex: 2,

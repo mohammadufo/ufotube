@@ -9,6 +9,7 @@ import {
   createTheme,
 } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
+import { SnackbarProvider, enqueueSnackbar } from 'notistack'
 
 const Container = styled.div`
   display: flex;
@@ -36,21 +37,23 @@ function App() {
   return (
     <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
       <MuiThemeProvider theme={theme}>
-        <CssBaseline />
-        <Container>
-          <Menu
-            showMenu={showMenu}
-            setShowMenu={setShowMenu}
-            darkMode={darkMode}
-            setDarkMode={setDarkMode}
-          />
-          <Main>
-            <Navbar showMenu={showMenu} setShowMenu={setShowMenu} />
-            <Wrapper onClick={() => setShowMenu(false)}>
-              <Outlet />
-            </Wrapper>
-          </Main>
-        </Container>
+        <SnackbarProvider>
+          <CssBaseline />
+          <Container>
+            <Menu
+              showMenu={showMenu}
+              setShowMenu={setShowMenu}
+              darkMode={darkMode}
+              setDarkMode={setDarkMode}
+            />
+            <Main>
+              <Navbar showMenu={showMenu} setShowMenu={setShowMenu} />
+              <Wrapper onClick={() => setShowMenu(false)}>
+                <Outlet />
+              </Wrapper>
+            </Main>
+          </Container>
+        </SnackbarProvider>
       </MuiThemeProvider>
     </ThemeProvider>
   )

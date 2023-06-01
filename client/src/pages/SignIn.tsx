@@ -8,9 +8,15 @@ import {
   InputLabel,
   OutlinedInput,
   Button,
+  FormHelperText,
+  CircularProgress,
 } from '@mui/material'
 import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
+import { useFormik } from 'formik'
+import { signInSchema, signUpSchema } from '../validations/user'
+import { publicService } from '../services/publicRequest'
+import { enqueueSnackbar } from 'notistack'
 
 const Container = styled.div`
   display: flex;
@@ -40,25 +46,6 @@ const SubTitle = styled.h2`
   font-weight: 300;
 `
 
-const Input = styled.input`
-  border: 1px solid ${({ theme }) => theme.soft};
-  border-radius: 3px;
-  padding: 10px;
-  background-color: transparent;
-  width: 100%;
-  color: ${({ theme }) => theme.text};
-`
-
-// const Button = styled.button`
-//   border-radius: 3px;
-//   border: none;
-//   padding: 10px 20px;
-//   font-weight: 500;
-//   cursor: pointer;
-//   background-color: ${({ theme }) => theme.soft};
-//   color: ${({ theme }) => theme.textSoft};
-// `
-
 const More = styled.div`
   display: flex;
   margin-top: 10px;
@@ -74,8 +61,19 @@ const Link = styled.span`
   margin-left: 30px;
 `
 
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+  gap: 0.7rem;
+`
+
 const SignIn = () => {
   const [showPassword, setShowPassword] = useState(false)
+  const [showSignUpPassword, setShowSignUpPassword] = useState(false)
+  const [signInLoading, setSignInLoading] = useState(false)
+  const [signUpLoading, setSignUpLoading] = useState(false)
 
   const handleClickShowPassword = () => setShowPassword((show) => !show)
   const handleMouseDownPassword = (
@@ -83,64 +81,219 @@ const SignIn = () => {
   ) => {
     event.preventDefault()
   }
+  const handleClickSingUpShowPassword = () =>
+    setShowSignUpPassword((show) => !show)
+
+  const initialSignInValue = {
+    name: '',
+    password: '',
+  }
+
+  const initialSignUpValue = {
+    name: '',
+    email: '',
+    password: '',
+  }
+
+  const signInformik = useFormik({
+    initialValues: initialSignInValue,
+    onSubmit: async (values) => {
+      try {
+        setSignInLoading(true)
+        const response = await publicService.api(
+          'POST',
+          '/auth/signin',
+          {},
+          values
+        )
+        setSignInLoading(false)
+        enqueueSnackbar(`Welcome back ${response.data.name} :)`, {
+          variant: 'success',
+          anchorOrigin: {
+            horizontal: 'top',
+            vertical: 'center',
+          },
+        })
+        console.log(response.data)
+      } catch (err) {
+        console.log(err)
+        setSignInLoading(false)
+        enqueueSnackbar(`oops! something went wrong 💀`, {
+          variant: 'error',
+          anchorOrigin: {
+            horizontal: 'top',
+            vertical: 'center',
+          },
+        })
+      }
+    },
+    validationSchema: signInSchema,
+  })
+  const signUpformik = useFormik({
+    initialValues: initialSignUpValue,
+    onSubmit: async (values) => {
+      try {
+        setSignUpLoading(true)
+        const response = await publicService.api(
+          'POST',
+          '/auth/signup',
+          {},
+          values
+        )
+        setSignUpLoading(false)
+        enqueueSnackbar(`Welcome ${response.data.name} 💕`, {
+          variant: 'success',
+          anchorOrigin: {
+            horizontal: 'top',
+            vertical: 'center',
+          },
+        })
+        console.log(response.data)
+      } catch (err) {
+        console.log(err)
+        setSignUpLoading(false)
+        enqueueSnackbar(`oops! something went wrong 💀`, {
+          variant: 'error',
+          anchorOrigin: {
+            horizontal: 'top',
+            vertical: 'center',
+          },
+        })
+      }
+    },
+    validationSchema: signUpSchema,
+  })
 
   return (
     <Container>
       <Wrapper>
         <Title>Sign in</Title>
         <SubTitle>to continue to UFOTUBE</SubTitle>
-        <TextField label="username" variant="outlined" size="small" fullWidth />
-        <FormControl variant="outlined" size="small">
-          <InputLabel htmlFor="outlined-adornment-password">
-            Password
-          </InputLabel>
-          <OutlinedInput
+        <Form autoComplete="off" onSubmit={signInformik.handleSubmit}>
+          <TextField
+            label="name"
+            variant="outlined"
+            size="small"
+            name="name"
             fullWidth
-            id="outlined-adornment-password"
-            type={showPassword ? 'text' : 'password'}
-            endAdornment={
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label="toggle password visibility"
-                  onClick={handleClickShowPassword}
-                  onMouseDown={handleMouseDownPassword}
-                  edge="end"
-                >
-                  {showPassword ? <VisibilityOff /> : <Visibility />}
-                </IconButton>
-              </InputAdornment>
+            helperText={
+              signInformik.touched.name ? signInformik.errors.name : null
             }
-            label="Password"
+            error={Boolean(
+              signInformik.touched.name && signInformik.errors.name
+            )}
+            value={signInformik.values?.name}
+            onChange={signInformik.handleChange}
           />
-        </FormControl>
-        <Button variant="outlined">Sign In</Button>
+          <FormControl variant="outlined" size="small">
+            <InputLabel htmlFor="outlined-adornment-password">
+              password
+            </InputLabel>
+            <OutlinedInput
+              fullWidth
+              id="outlined-adornment-password"
+              type={showPassword ? 'text' : 'password'}
+              name="password"
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                    edge="end"
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              }
+              label="password"
+              error={Boolean(
+                signInformik.touched.password && signInformik.errors.password
+              )}
+              value={signInformik.values?.password}
+              onChange={signInformik.handleChange}
+            />
+            {signInformik.touched.password ? (
+              <FormHelperText error>
+                {signInformik.errors.password}
+              </FormHelperText>
+            ) : null}
+          </FormControl>
+
+          <Button type="submit" variant="outlined">
+            {signInLoading ? <CircularProgress size="1.5rem" /> : 'Sign In'}
+          </Button>
+        </Form>
         <Title>or</Title>
-        <TextField label="username" variant="outlined" size="small" fullWidth />
-        <TextField label="email" variant="outlined" size="small" fullWidth />
-        <FormControl variant="outlined" size="small">
-          <InputLabel htmlFor="outlined-adornment-password">
-            Password
-          </InputLabel>
-          <OutlinedInput
+        <Form autoComplete="off" onSubmit={signUpformik.handleSubmit}>
+          <TextField
+            label="name"
+            name="name"
+            variant="outlined"
+            size="small"
             fullWidth
-            id="outlined-adornment-password"
-            type={showPassword ? 'text' : 'password'}
-            endAdornment={
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label="toggle password visibility"
-                  onClick={handleClickShowPassword}
-                  onMouseDown={handleMouseDownPassword}
-                  edge="end"
-                >
-                  {showPassword ? <VisibilityOff /> : <Visibility />}
-                </IconButton>
-              </InputAdornment>
+            helperText={
+              signUpformik.touched.name ? signUpformik.errors.name : null
             }
-            label="Password"
+            error={Boolean(
+              signUpformik.touched.name && signUpformik.errors.name
+            )}
+            value={signUpformik.values?.name}
+            onChange={signUpformik.handleChange}
           />
-        </FormControl>
-        <Button variant="outlined">Sign Up</Button>
+          <TextField
+            label="email"
+            name="email"
+            variant="outlined"
+            size="small"
+            fullWidth
+            helperText={
+              signUpformik.touched.email ? signUpformik.errors.email : null
+            }
+            error={Boolean(
+              signUpformik.touched.email && signUpformik.errors.email
+            )}
+            value={signUpformik.values?.email}
+            onChange={signUpformik.handleChange}
+          />
+          <FormControl variant="outlined" size="small">
+            <InputLabel htmlFor="outlined-adornment-password">
+              Password
+            </InputLabel>
+            <OutlinedInput
+              fullWidth
+              id="outlined-adornment-password2"
+              type={showSignUpPassword ? 'text' : 'password'}
+              name="password"
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickSingUpShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                    edge="end"
+                  >
+                    {showSignUpPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              }
+              label="password"
+              error={Boolean(
+                signUpformik.touched.password && signUpformik.errors.password
+              )}
+              value={signUpformik.values?.password}
+              onChange={signUpformik.handleChange}
+            />
+            {signUpformik.touched.password ? (
+              <FormHelperText error>
+                {signUpformik.errors.password}
+              </FormHelperText>
+            ) : null}
+          </FormControl>
+          <Button variant="outlined" type="submit">
+            {signUpLoading ? <CircularProgress size="1.5rem" /> : 'Sign Up'}
+          </Button>
+        </Form>
       </Wrapper>
       <More>
         English(USA)
