@@ -4,6 +4,7 @@ import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined'
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
 import LogoutIcon from '@mui/icons-material/Logout'
 import MenuIcon from '@mui/icons-material/Menu'
+import VideoCallIcon from '@mui/icons-material/VideoCall'
 import { Link } from 'react-router-dom'
 import { phone } from '../utils/responsive'
 import { useSelector, useDispatch } from 'react-redux'
@@ -104,6 +105,7 @@ const UserWrapper = styled.div`
 
 const Navbar = ({ showMenu, setShowMenu }) => {
   const { currentUser } = useSelector((state) => state.user)
+  console.log(currentUser)
   const dispatch = useDispatch()
   console.log(currentUser)
 
@@ -170,6 +172,10 @@ const Navbar = ({ showMenu, setShowMenu }) => {
               <MenuItem onClick={handleLogout}>
                 <LogoutIcon />
                 &nbsp;&nbsp; Logout
+              </MenuItem>
+              <MenuItem onClick={() => {}}>
+                <VideoCallIcon />
+                &nbsp;&nbsp; Upload Video
               </MenuItem>
             </Menu>
           </UserWrapper>

@@ -13,6 +13,7 @@ import {
 } from '@mui/material'
 import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
+import GoogleIcon from '@mui/icons-material/Google'
 import { useFormik } from 'formik'
 import { signInSchema, signUpSchema } from '../validations/user'
 import { publicService } from '../services/publicRequest'
@@ -26,6 +27,8 @@ import {
   registerStart,
   registerSuccess,
 } from '../redux/userSlice'
+import { auth, googleProvider } from '../utils/firebase'
+import { signInWithPopup } from 'firebase/auth'
 
 const Container = styled.div`
   display: flex;
@@ -177,6 +180,57 @@ const SignIn = () => {
     validationSchema: signUpSchema,
   })
 
+  const googleSingIn = async (result) => {
+    try {
+      dispatch(loginStart())
+      const response = await publicService.api(
+        'POST',
+        '/auth/google',
+        {},
+        {
+          name: result.user.displayName,
+          email: result.user.email,
+          img: result.user.photoURL,
+        }
+      )
+      dispatch(loginSuccess(response.data))
+      enqueueSnackbar(`Welcome ${response.data.name} 💕`, {
+        variant: 'success',
+        anchorOrigin: {
+          horizontal: 'top',
+          vertical: 'center',
+        },
+      })
+    } catch (err) {
+      console.log(err)
+      dispatch(loginFailure())
+      enqueueSnackbar(`oops! something went wrong 💀`, {
+        variant: 'error',
+        anchorOrigin: {
+          horizontal: 'top',
+          vertical: 'center',
+        },
+      })
+    }
+  }
+
+  const signInWithGoogle = () => {
+    signInWithPopup(auth, googleProvider)
+      .then((result) => {
+        googleSingIn(result)
+      })
+      .catch((err) => {
+        dispatch(loginFailure())
+        enqueueSnackbar(`oops! something went wrong 💀`, {
+          variant: 'error',
+          anchorOrigin: {
+            horizontal: 'top',
+            vertical: 'center',
+          },
+        })
+      })
+  }
+
   return (
     <Container>
       <Wrapper>
@@ -237,6 +291,11 @@ const SignIn = () => {
             {loading ? <CircularProgress size="1.5rem" /> : 'Sign In'}
           </Button>
         </Form>
+        <Title>or</Title>
+        <Button type="submit" variant="outlined" onClick={signInWithGoogle}>
+          <GoogleIcon />
+          &nbsp;Sign in With Google
+        </Button>
         <Title>or</Title>
         <Form autoComplete="off" onSubmit={signUpformik.handleSubmit}>
           <TextField
