@@ -1,5 +1,7 @@
 import styled from 'styled-components'
 import Comment from './Comment'
+import { TextField, IconButton } from '@mui/material'
+import SendIcon from '@mui/icons-material/Send'
 
 const Container = styled.div`
   padding-bottom: 5rem;
@@ -7,7 +9,7 @@ const Container = styled.div`
 
 const NewComment = styled.div`
   display: flex;
-  align-items: center;
+  align-items: stretch;
   gap: 10px;
 `
 
@@ -17,22 +19,15 @@ const Avatar = styled.img`
   border-radius: 50%;
 `
 
-const Input = styled.input`
-  border: none;
-  border-bottom: 1px solid ${({ theme }) => theme.soft};
-  color: ${({ theme }) => theme.text};
-  background-color: transparent;
-  outline: none;
-  padding: 5px;
-  width: 100%;
-`
-
 const Comments = () => {
   return (
     <Container>
       <NewComment>
         <Avatar src="https://yt3.ggpht.com/yti/APfAmoE-Q0ZLJ4vk3vqmV4Kwp0sbrjxLyB8Q4ZgNsiRH=s88-c-k-c0x00ffffff-no-rj-mo" />
-        <Input placeholder="Add a comment..." />
+        <TextField fullWidth label="add comment ..." variant="standard" />
+        <IconButton>
+          <SendIcon />
+        </IconButton>
       </NewComment>
       <Comment />
       <Comment />

@@ -19,18 +19,58 @@ export interface Video {
 export interface VideoSlice {
   currentVideo: Video | null
   loading: boolean
-  registerLoading: boolean
   error: boolean
+  name: string
 }
 
-const initialState: VideoSlice | null = {}
+const initialState: VideoSlice = {
+  currentVideo: null,
+  loading: false,
+  error: false,
+  name: 'mamad',
+}
 
 export const videoSlice = createSlice({
-  name: 'video',
+  name: 'user',
   initialState,
-  reducers: {},
+  reducers: {
+    fetchStart: (state) => {
+      state.loading = true
+    },
+    fetchSuccess: (state, action: PayloadAction<Video>) => {
+      state.loading = false
+      state.currentVideo = action.payload
+    },
+    fetchFailure: (state) => {
+      state.loading = false
+      state.error = true
+    },
+    like: (state, action) => {
+      if (!state?.currentVideo?.likes?.includes(action.payload)) {
+        state?.currentVideo?.likes?.push(action.payload)
+        state?.currentVideo?.disLikes?.splice(
+          state?.currentVideo?.disLikes?.findIndex(
+            (userId) => userId === action.payload
+          ),
+          1
+        )
+      }
+    },
+    disLike: (state, action) => {
+      if (!state?.currentVideo?.disLikes?.includes(action.payload)) {
+        state?.currentVideo?.disLikes?.push(action.payload)
+        state?.currentVideo?.likes?.splice(
+          state?.currentVideo?.likes?.findIndex(
+            (userId) => userId === action.payload
+          ),
+          1
+        )
+      }
+    },
+  },
 })
 
-export const {} = videoSlice.actions
+export const { fetchStart, fetchSuccess, fetchFailure, like, disLike } =
+  videoSlice.actions
 
 export default videoSlice.reducer

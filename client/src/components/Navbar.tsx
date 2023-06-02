@@ -105,9 +105,7 @@ const UserWrapper = styled.div`
 
 const Navbar = ({ showMenu, setShowMenu }) => {
   const { currentUser } = useSelector((state) => state.user)
-  console.log(currentUser)
   const dispatch = useDispatch()
-  console.log(currentUser)
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
