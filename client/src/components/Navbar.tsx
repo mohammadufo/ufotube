@@ -103,7 +103,7 @@ const UserWrapper = styled.div`
   gap: 0.5rem;
 `
 
-const Navbar = ({ showMenu, setShowMenu }) => {
+const Navbar = ({ showMenu, setShowMenu, setOpen }) => {
   const { currentUser } = useSelector((state) => state.user)
   const dispatch = useDispatch()
 
@@ -118,6 +118,11 @@ const Navbar = ({ showMenu, setShowMenu }) => {
 
   const handleLogout = () => {
     dispatch(logout())
+    handleClose()
+  }
+
+  const handleModal = () => {
+    setOpen(true)
     handleClose()
   }
 
@@ -171,7 +176,7 @@ const Navbar = ({ showMenu, setShowMenu }) => {
                 <LogoutIcon />
                 &nbsp;&nbsp; Logout
               </MenuItem>
-              <MenuItem onClick={() => {}}>
+              <MenuItem onClick={handleModal}>
                 <VideoCallIcon />
                 &nbsp;&nbsp; Upload Video
               </MenuItem>

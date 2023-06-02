@@ -10,6 +10,7 @@ import {
 } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
 import { SnackbarProvider, enqueueSnackbar } from 'notistack'
+import AddVideoModal from './components/AddVideoModal'
 
 const Container = styled.div`
   display: flex;
@@ -27,6 +28,7 @@ const Wrapper = styled.div``
 function App() {
   const [darkMode, setDarkMode] = useState(true)
   const [showMenu, setShowMenu] = useState(false)
+  const [open, setOpen] = useState(false)
 
   const theme = createTheme({
     palette: {
@@ -47,10 +49,15 @@ function App() {
               setDarkMode={setDarkMode}
             />
             <Main>
-              <Navbar showMenu={showMenu} setShowMenu={setShowMenu} />
+              <Navbar
+                setOpen={setOpen}
+                showMenu={showMenu}
+                setShowMenu={setShowMenu}
+              />
               <Wrapper onClick={() => setShowMenu(false)}>
                 <Outlet />
               </Wrapper>
+              <AddVideoModal open={open} setOpen={setOpen} />
             </Main>
           </Container>
         </SnackbarProvider>
