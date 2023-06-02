@@ -10,41 +10,23 @@ import CloseIcon from '@mui/icons-material/Close'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import styled from 'styled-components'
 import { TextField, Fab } from '@mui/material'
-
-const Input = styled.input`
-  border: 1px solid ${({ theme }) => theme.soft};
-  color: ${({ theme }) => theme.text};
-  border-radius: 3px;
-  padding: 10px;
-  background-color: transparent;
-  z-index: 999;
-`
+import { useState, useEffect } from 'react'
+import {
+  getStorage,
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+} from 'firebase/storage'
+import app from '../utils/firebase'
+import { publicService } from '../services/publicRequest'
+import { useNavigate } from 'react-router-dom'
+import { enqueueSnackbar } from 'notistack'
 
 const Container = styled.div`
   width: 30rem;
   display: flex;
   flex-direction: column;
   gap: 2rem;
-`
-
-const Desc = styled.textarea`
-  border: 1px solid ${({ theme }) => theme.soft};
-  color: ${({ theme }) => theme.text};
-  border-radius: 3px;
-  padding: 10px;
-  background-color: transparent;
-`
-
-const Wrapper = styled.div`
-  width: 600px;
-  height: 600px;
-  background-color: ${({ theme }) => theme.bgLighter};
-  color: ${({ theme }) => theme.text};
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  position: relative;
 `
 const UploadBox = styled.div`
   display: flex;
@@ -97,6 +79,88 @@ export default function AddVideoModal({ open, setOpen }) {
     setOpen(false)
   }
 
+  const navigate = useNavigate()
+
+  const [video, setVideo] = useState(null)
+  const [img, setImg] = useState(null)
+  const [imagePerc, setImagePerc] = useState(0)
+  const [videoPerc, setVideoPerc] = useState(0)
+  const [inputs, setInputs] = useState({})
+  const [tags, setTags] = useState([])
+
+  const handleTags = (e) => {
+    setTags(e.target.value.split(','))
+  }
+
+  const handleChange = (e) => {
+    setInputs((prev) => {
+      return { ...prev, [e.target.name]: e.target.value }
+    })
+  }
+
+  const uploadFile = (file, urlType) => {
+    const storage = getStorage(app)
+    const fileName = new Date().getTime() + file.name
+    const storageRef = ref(storage, fileName)
+    const uploadTask = uploadBytesResumable(storageRef, file)
+
+    uploadTask.on(
+      'state_changed',
+      (snapshot) => {
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        urlType === 'imgUrl'
+          ? setImagePerc(Math.round(progress))
+          : setVideoPerc(Math.round(progress))
+        switch (snapshot.state) {
+          case 'paused':
+            console.log('Upload is paused')
+            break
+          case 'running':
+            console.log('Upload is running')
+            break
+          default:
+            break
+        }
+      },
+      (error) => {},
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          setInputs((prev) => {
+            return { ...prev, [urlType]: downloadURL }
+          })
+        })
+      }
+    )
+  }
+
+  useEffect(() => {
+    video && uploadFile(video, 'videoUrl')
+  }, [video])
+
+  useEffect(() => {
+    img && uploadFile(img, 'imgUrl')
+  }, [img])
+
+  const handleUpload = async (e) => {
+    e.preventDefault()
+    const res = await publicService.api(
+      'POST',
+      '/videos',
+      {},
+      { ...inputs, tags }
+    )
+    setOpen(false)
+    res.status === 200 && navigate(`/video/${res.data._id}`)
+
+    enqueueSnackbar('Well done! video added successfully 🥳🥰', {
+      variant: 'success',
+      anchorOrigin: {
+        horizontal: 'top',
+        vertical: 'center',
+      },
+    })
+  }
+
   return (
     <div>
       <BootstrapDialog
@@ -120,16 +184,37 @@ export default function AddVideoModal({ open, setOpen }) {
                 aria-label="add"
               >
                 <CloudUploadIcon />
-                <input type="file" accept="video/*" hidden />
+                <input
+                  type="file"
+                  accept="video/*"
+                  hidden
+                  onChange={(e) => setVideo(e.target.files[0])}
+                />
               </Fab>
-              <Span>Upload Video</Span>
+              {videoPerc > 0 ? (
+                <Span>{'Uploading:' + videoPerc}</Span>
+              ) : (
+                <Span>Upload Video</Span>
+              )}
             </UploadBox>
-            <TextField label="Title" variant="outlined" />
-            <TextField label="Description" multiline rows={3} />
+            <TextField
+              name="title"
+              label="Title"
+              variant="outlined"
+              onChange={handleChange}
+            />
+            <TextField
+              label="Description"
+              name="desc"
+              multiline
+              rows={3}
+              onChange={handleChange}
+            />
             <TextField
               label="tags"
               placeholder="Separate the tags with commas."
               variant="outlined"
+              onChange={handleTags}
             />
             <UploadBox>
               <Fab
@@ -139,14 +224,29 @@ export default function AddVideoModal({ open, setOpen }) {
                 aria-label="add"
               >
                 <CloudUploadIcon />
-                <input type="file" accept="image/*" hidden />
+                <input
+                  type="file"
+                  accept="image/*"
+                  hidden
+                  onChange={(e) => setImg(e.target.files[0])}
+                />
               </Fab>
-              <Span>Upload Image</Span>
+              {imagePerc > 0 ? (
+                <Span>{'Uploading:' + imagePerc}</Span>
+              ) : (
+                <Span>Upload Image</Span>
+              )}
+              {imagePerc}
             </UploadBox>
           </Container>
         </DialogContent>
         <DialogActions>
-          <Button fullWidth variant="contained" autoFocus onClick={handleClose}>
+          <Button
+            fullWidth
+            variant="contained"
+            autoFocus
+            onClick={handleUpload}
+          >
             Upload
           </Button>
         </DialogActions>

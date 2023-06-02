@@ -23,6 +23,7 @@ import VideoLoading from '../components/VideoLoading'
 import ThumbUpIcon from '@mui/icons-material/ThumbUp'
 import { Avatar, IconButton, Button as MuiButton } from '@mui/material'
 import { subscription } from '../redux/userSlice'
+import Recommendation from '../components/Recommendation'
 
 const Container = styled.div`
   display: flex;
@@ -73,17 +74,6 @@ const Hr = styled.hr`
   border: 0.5px solid ${({ theme }) => theme.soft};
 `
 
-const Recommendation = styled.div`
-  flex: 2;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-
-  height: 80vh !important;
-  overflow-y: scroll !important;
-
-  ${phone({ display: 'none' })}
-`
 const Channel = styled.div`
   display: flex;
   justify-content: space-between;
@@ -189,16 +179,7 @@ const Video = () => {
         <>
           <Content>
             <VideoWrapper>
-              {/* <iframe
-                width="100%"
-                height="auto"
-                src={currentVideo.videoUrl}
-                title="YouTube video player"
-                frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              ></iframe> */}
-              <VideoFrame src={currentVideo.videoUrl} />
+              <VideoFrame src={currentVideo.videoUrl} controls />
             </VideoWrapper>
 
             <Title>{currentVideo.title}</Title>
@@ -278,21 +259,7 @@ const Video = () => {
             <Hr />
             <Comments videoId={currentVideo._id} img={currentUser.img} />
           </Content>
-          <Recommendation>
-            <CardComponent type="sm" />
-            <CardComponent type="sm" />
-            <CardComponent type="sm" />
-            <CardComponent type="sm" />
-            <CardComponent type="sm" />
-            <CardComponent type="sm" />
-            <CardComponent type="sm" />
-            <CardComponent type="sm" />
-            <CardComponent type="sm" />
-            <CardComponent type="sm" />
-            <CardComponent type="sm" />
-            <CardComponent type="sm" />
-            <CardComponent type="sm" />
-          </Recommendation>
+          <Recommendation />
         </>
       )}
     </Container>
