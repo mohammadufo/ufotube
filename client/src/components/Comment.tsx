@@ -1,5 +1,8 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
+import { publicService } from '../services/publicRequest'
+import { commentObj } from '../types/public'
+import { format } from 'timeago.js'
 
 const Container = styled.div`
   display: flex;
@@ -36,20 +39,35 @@ const Text = styled.span`
   font-size: 14px;
 `
 
-const Comment = () => {
+const Comment = (props: { commentObj: commentObj }) => {
+  const [user, setUser] = useState({})
+
+  const fetchUser = async () => {
+    try {
+      const res = await publicService.api(
+        'GET',
+        `/users/find/${props.commentObj.userId}`,
+        {},
+        {}
+      )
+      setUser(res.data)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  useEffect(() => {
+    fetchUser()
+  }, [props.commentObj.userId])
+
   return (
     <Container>
-      <Avatar src="https://yt3.ggpht.com/yti/APfAmoE-Q0ZLJ4vk3vqmV4Kwp0sbrjxLyB8Q4ZgNsiRH=s88-c-k-c0x00ffffff-no-rj-mo" />{' '}
+      <Avatar src={user.img} />
       <Details>
         <Name>
-          John Doe <Date>1 day ago</Date>
+          {user.name} <Date>{format(props.commentObj.createdAt)}</Date>
         </Name>
-        <Text>
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Vel, ex
-          laboriosam ipsam aliquam voluptatem perferendis provident modi, sequi
-          tempore reiciendis quod, optio ullam cumque? Quidem numquam sint
-          mollitia totam reiciendis?
-        </Text>
+        <Text>{props.commentObj.desc}</Text>
       </Details>
     </Container>
   )

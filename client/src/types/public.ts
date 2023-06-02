@@ -12,3 +12,12 @@ export type Video = {
   createdAt: string
   updatedAt: string
 }
+
+export type commentObj = {
+  _id: string
+  userId: string
+  videoId: string
+  desc: string
+  createdAt: string
+  updatedAt: string
+}

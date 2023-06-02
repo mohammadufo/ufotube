@@ -115,15 +115,10 @@ const Description = styled.p`
   font-size: 14px;
 `
 
-const Subscribe = styled.button`
-  background-color: #cc1a00;
-  font-weight: 500;
-  color: white;
-  border: none;
-  border-radius: 3px;
-  height: max-content;
-  padding: 10px 20px;
-  cursor: pointer;
+const VideoFrame = styled.video`
+  max-height: 720px;
+  width: 100%;
+  object-fit: cover;
 `
 
 const Video = () => {
@@ -194,7 +189,7 @@ const Video = () => {
         <>
           <Content>
             <VideoWrapper>
-              <iframe
+              {/* <iframe
                 width="100%"
                 height="auto"
                 src={currentVideo.videoUrl}
@@ -202,7 +197,8 @@ const Video = () => {
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
-              ></iframe>
+              ></iframe> */}
+              <VideoFrame src={currentVideo.videoUrl} />
             </VideoWrapper>
 
             <Title>{currentVideo.title}</Title>
@@ -280,7 +276,7 @@ const Video = () => {
               </MuiButton>
             </Channel>
             <Hr />
-            <Comments />
+            <Comments videoId={currentVideo._id} img={currentUser.img} />
           </Content>
           <Recommendation>
             <CardComponent type="sm" />
