@@ -65,13 +65,10 @@ export const videoSlice = createSlice({
         )
       }
     },
-    search: (state, action) => {
-      state.search = action.payload
-    },
   },
 })
 
-export const { fetchStart, fetchSuccess, fetchFailure, like, disLike, search } =
+export const { fetchStart, fetchSuccess, fetchFailure, like, disLike } =
   videoSlice.actions
 
 export default videoSlice.reducer

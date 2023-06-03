@@ -5,8 +5,6 @@ import ThumbDownAltIcon from '@mui/icons-material/ThumbDownAlt'
 import ReplyOutlinedIcon from '@mui/icons-material/ReplyOutlined'
 import AddTaskOutlinedIcon from '@mui/icons-material/AddTaskOutlined'
 import Comments from '../components/Comments'
-import CardComponent from '../components/CardComponent'
-import { phone } from '../utils/responsive'
 import { useSelector, useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { publicService } from '../services/publicRequest'
@@ -135,8 +133,8 @@ const Video = () => {
         {},
         {}
       )
-      // console.log('video res ---->', videoRes.data)
-      console.log('channel res ---->', channelRes.data)
+      console.log('video res ---->', videoRes.data)
+      // console.log('channel res ---->', channelRes.data)
       dispatch(fetchSuccess(videoRes.data))
       setChannel(channelRes.data)
     } catch (err) {
@@ -150,12 +148,17 @@ const Video = () => {
   }, [id, dispatch])
 
   const handleLike = async () => {
-    await publicService.api('PUT', `/users/like/${currentVideo._id}`, {}, {})
-    dispatch(like(currentUser._id))
+    await publicService.api('PUT', `/users/like/${currentVideo?._id}`, {}, {})
+    dispatch(like(currentUser?._id))
   }
   const handleDisLike = async () => {
-    await publicService.api('PUT', `/users/dislike/${currentVideo._id}`, {}, {})
-    dispatch(disLike(currentUser._id))
+    await publicService.api(
+      'PUT',
+      `/users/dislike/${currentVideo?._id}`,
+      {},
+      {}
+    )
+    dispatch(disLike(currentUser?._id))
   }
 
   const handleSubscribe = async () => {
@@ -179,13 +182,13 @@ const Video = () => {
         <>
           <Content>
             <VideoWrapper>
-              <VideoFrame src={currentVideo.videoUrl} controls />
+              <VideoFrame src={currentVideo?.videoUrl} controls />
             </VideoWrapper>
 
-            <Title>{currentVideo.title}</Title>
+            <Title>{currentVideo?.title}</Title>
             <Details>
               <Info>
-                {currentVideo.views} views • {format(currentVideo.createdAt)}
+                {currentVideo?.views} views • {format(currentVideo?.createdAt)}
               </Info>
               <Buttons>
                 <Button>
@@ -196,7 +199,7 @@ const Video = () => {
                       <ThumbUpOutlinedIcon />
                     )}
                   </IconButton>
-                  {currentVideo.likes?.length}
+                  {currentVideo?.likes?.length}
                 </Button>
                 <Button>
                   <IconButton onClick={handleDisLike}>
@@ -233,7 +236,7 @@ const Video = () => {
                   <ChannelCounter>
                     {channel.subscribers} subscribers
                   </ChannelCounter>
-                  <Description>{currentVideo.desc}</Description>
+                  <Description>{currentVideo?.desc}</Description>
                 </ChannelDetail>
               </ChannelInfo>
 
@@ -257,9 +260,9 @@ const Video = () => {
               </MuiButton>
             </Channel>
             <Hr />
-            <Comments videoId={currentVideo._id} img={currentUser.img} />
+            <Comments videoId={currentVideo?._id} img={currentUser?.img} />
           </Content>
-          <Recommendation />
+          <Recommendation tags={currentVideo?.tags.join(',')} />
         </>
       )}
     </Container>

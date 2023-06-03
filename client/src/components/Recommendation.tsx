@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
+import { publicService } from '../services/publicRequest'
 import { Video } from '../types/public'
 import { phone } from '../utils/responsive'
 import CardComponent from './CardComponent'
@@ -22,7 +23,12 @@ const Recommendation = ({ tags }) => {
 
   useEffect(() => {
     const fetchVideos = async () => {
-      const res = await axios.get(`/videos/tags?tags=${tags}`)
+      const res = await publicService.api(
+        'GET',
+        `/videos/tags?tags=${tags}`,
+        {},
+        {}
+      )
       setVideos(res.data)
     }
     fetchVideos()
