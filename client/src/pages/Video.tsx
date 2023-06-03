@@ -22,6 +22,7 @@ import ThumbUpIcon from '@mui/icons-material/ThumbUp'
 import { Avatar, IconButton, Button as MuiButton } from '@mui/material'
 import { subscription } from '../redux/userSlice'
 import Recommendation from '../components/Recommendation'
+import { phone } from '../utils/responsive'
 
 const Container = styled.div`
   display: flex;
@@ -29,6 +30,8 @@ const Container = styled.div`
   height: 100vh !important;
   overflow-y: scroll !important;
   padding: 22px 44px;
+
+  ${phone({ padding: '10px' })}
 `
 
 const Content = styled.div`
@@ -107,6 +110,11 @@ const VideoFrame = styled.video`
   max-height: 720px;
   width: 100%;
   object-fit: cover;
+`
+
+const MobileContainer = styled.div`
+  display: flex;
+  ${phone({ display: 'none' })}
 `
 
 const Video = () => {
@@ -211,18 +219,20 @@ const Video = () => {
                   </IconButton>
                   Dislike
                 </Button>
-                <Button>
-                  <IconButton>
-                    <ReplyOutlinedIcon />
-                  </IconButton>
-                  Share
-                </Button>
-                <Button>
-                  <IconButton>
-                    <AddTaskOutlinedIcon />
-                  </IconButton>
-                  Save
-                </Button>
+                <MobileContainer>
+                  <Button>
+                    <IconButton>
+                      <ReplyOutlinedIcon />
+                    </IconButton>
+                    Share
+                  </Button>
+                  <Button>
+                    <IconButton>
+                      <AddTaskOutlinedIcon />
+                    </IconButton>
+                    Save
+                  </Button>
+                </MobileContainer>
               </Buttons>
             </Details>
             <Hr />

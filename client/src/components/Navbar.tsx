@@ -178,13 +178,13 @@ const Navbar = ({ setShowMenu, setOpen, setSearch, search }) => {
                 'aria-labelledby': 'basic-button',
               }}
             >
-              <MenuItem onClick={handleLogout}>
-                <LogoutIcon />
-                &nbsp;&nbsp; Logout
-              </MenuItem>
               <MenuItem onClick={handleModal}>
                 <VideoCallIcon />
                 &nbsp;&nbsp; Upload Video
+              </MenuItem>
+              <MenuItem onClick={handleLogout}>
+                <LogoutIcon />
+                &nbsp;&nbsp; Logout
               </MenuItem>
             </Menu>
           </UserWrapper>

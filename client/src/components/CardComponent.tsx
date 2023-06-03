@@ -65,7 +65,7 @@ const CardComponent = (props: { type?: string; video: Video }) => {
     <>
       {props.type === 'sm' ? (
         <Link
-          to="/video/test"
+          to={`/video/${props.video._id}`}
           style={{ textDecoration: 'none', color: 'inherit' }}
         >
           <CardActionArea>
@@ -73,17 +73,17 @@ const CardComponent = (props: { type?: string; video: Video }) => {
               <CardMedia
                 component="img"
                 sx={{ width: 151 }}
-                image={''}
-                alt="Live from space album cover"
+                image={props.video.imgUrl}
+                alt={props.video.title}
               />
               <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                 <CardContent sx={{ flex: '1 0 auto' }}>
                   <CardWrapper>
                     <Desc>
-                      <Title>Test Video</Title>
-                      <ChannelName>Muhammad UFO</ChannelName>
-                      <Info>660,908 views </Info>
-                      <Info>1 day ago </Info>
+                      <Title>{props.video.title}</Title>
+                      <ChannelName>{user.name}</ChannelName>
+                      <Info>{props.video.views} views </Info>
+                      <Info>{format(props.video.createdAt)} </Info>
                     </Desc>
                   </CardWrapper>
                 </CardContent>

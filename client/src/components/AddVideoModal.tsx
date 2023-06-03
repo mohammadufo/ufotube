@@ -145,6 +145,17 @@ export default function AddVideoModal({ open, setOpen }) {
   }, [img])
 
   const handleUpload = async (e) => {
+    if (!video || !img || !inputs || !tags.length) {
+      enqueueSnackbar('please complete the form! 😒', {
+        variant: 'error',
+        anchorOrigin: {
+          horizontal: 'top',
+          vertical: 'center',
+        },
+      })
+      return
+    }
+
     e.preventDefault()
     try {
       setLoading(true)
