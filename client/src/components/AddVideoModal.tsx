@@ -21,6 +21,8 @@ import app from '../utils/firebase'
 import { publicService } from '../services/publicRequest'
 import { useNavigate } from 'react-router-dom'
 import { enqueueSnackbar } from 'notistack'
+import { Typography, CircularProgress } from '@mui/material'
+import DoneIcon from '@mui/icons-material/Done'
 
 const Container = styled.div`
   width: 30rem;
@@ -87,6 +89,7 @@ export default function AddVideoModal({ open, setOpen }) {
   const [videoPerc, setVideoPerc] = useState(0)
   const [inputs, setInputs] = useState({})
   const [tags, setTags] = useState([])
+  const [loading, setLoading] = useState(false)
 
   const handleTags = (e) => {
     setTags(e.target.value.split(','))
@@ -143,22 +146,35 @@ export default function AddVideoModal({ open, setOpen }) {
 
   const handleUpload = async (e) => {
     e.preventDefault()
-    const res = await publicService.api(
-      'POST',
-      '/videos',
-      {},
-      { ...inputs, tags }
-    )
-    setOpen(false)
-    res.status === 200 && navigate(`/video/${res.data._id}`)
-
-    enqueueSnackbar('Well done! video added successfully 🥳🥰', {
-      variant: 'success',
-      anchorOrigin: {
-        horizontal: 'top',
-        vertical: 'center',
-      },
-    })
+    try {
+      setLoading(true)
+      const res = await publicService.api(
+        'POST',
+        '/videos',
+        {},
+        { ...inputs, tags }
+      )
+      setOpen(false)
+      res.status === 200 && navigate(`/video/${res.data._id}`)
+      setLoading(false)
+      enqueueSnackbar('Well done! video added successfully 🥳🥰', {
+        variant: 'success',
+        anchorOrigin: {
+          horizontal: 'top',
+          vertical: 'center',
+        },
+      })
+    } catch (err) {
+      console.log(err)
+      setLoading(false)
+      enqueueSnackbar('oh! something went wrong 💥', {
+        variant: 'error',
+        anchorOrigin: {
+          horizontal: 'top',
+          vertical: 'center',
+        },
+      })
+    }
   }
 
   return (
@@ -183,16 +199,35 @@ export default function AddVideoModal({ open, setOpen }) {
                 color="primary"
                 aria-label="add"
               >
-                <CloudUploadIcon />
-                <input
-                  type="file"
-                  accept="video/*"
-                  hidden
-                  onChange={(e) => setVideo(e.target.files[0])}
-                />
+                <>
+                  {videoPerc > 0 ? (
+                    <>
+                      {videoPerc === 100 && <DoneIcon />}
+                      {videoPerc !== 100 && videoPerc > 0 && (
+                        <CircularProgress color="inherit" />
+                      )}
+                    </>
+                  ) : (
+                    <>
+                      <CloudUploadIcon />
+                      <input
+                        type="file"
+                        accept="video/*"
+                        hidden
+                        onChange={(e) => setVideo(e.target.files[0])}
+                      />
+                    </>
+                  )}
+                </>
               </Fab>
               {videoPerc > 0 ? (
-                <Span>{'Uploading:' + videoPerc}</Span>
+                <>
+                  {videoPerc === 100 ? (
+                    <Typography color="success">SuccessFul!</Typography>
+                  ) : (
+                    <Span>{'Uploading:' + videoPerc}</Span>
+                  )}
+                </>
               ) : (
                 <Span>Upload Video</Span>
               )}
@@ -223,20 +258,38 @@ export default function AddVideoModal({ open, setOpen }) {
                 color="primary"
                 aria-label="add"
               >
-                <CloudUploadIcon />
-                <input
-                  type="file"
-                  accept="image/*"
-                  hidden
-                  onChange={(e) => setImg(e.target.files[0])}
-                />
+                <>
+                  {imagePerc > 0 ? (
+                    <>
+                      {imagePerc === 100 && <DoneIcon />}
+                      {imagePerc !== 100 && imagePerc > 0 && (
+                        <CircularProgress color="inherit" />
+                      )}
+                    </>
+                  ) : (
+                    <>
+                      <CloudUploadIcon />
+                      <input
+                        type="file"
+                        accept="image/*"
+                        hidden
+                        onChange={(e) => setImg(e.target.files[0])}
+                      />
+                    </>
+                  )}
+                </>
               </Fab>
               {imagePerc > 0 ? (
-                <Span>{'Uploading:' + imagePerc}</Span>
+                <>
+                  {videoPerc === 100 ? (
+                    <Typography color="success">SuccessFul!</Typography>
+                  ) : (
+                    <Span>{'Uploading:' + videoPerc}</Span>
+                  )}
+                </>
               ) : (
                 <Span>Upload Image</Span>
               )}
-              {imagePerc}
             </UploadBox>
           </Container>
         </DialogContent>
@@ -247,7 +300,7 @@ export default function AddVideoModal({ open, setOpen }) {
             autoFocus
             onClick={handleUpload}
           >
-            Upload
+            {loading ? <CircularProgress color="inherit" /> : 'Upload'}
           </Button>
         </DialogActions>
       </BootstrapDialog>
