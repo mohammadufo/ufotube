@@ -20,14 +20,12 @@ export interface VideoSlice {
   currentVideo: Video | null
   loading: boolean
   error: boolean
-  name: string
 }
 
 const initialState: VideoSlice = {
   currentVideo: null,
   loading: false,
   error: false,
-  name: 'mamad',
 }
 
 export const videoSlice = createSlice({
@@ -67,10 +65,13 @@ export const videoSlice = createSlice({
         )
       }
     },
+    search: (state, action) => {
+      state.search = action.payload
+    },
   },
 })
 
-export const { fetchStart, fetchSuccess, fetchFailure, like, disLike } =
+export const { fetchStart, fetchSuccess, fetchFailure, like, disLike, search } =
   videoSlice.actions
 
 export default videoSlice.reducer

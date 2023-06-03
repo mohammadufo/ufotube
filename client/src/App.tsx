@@ -9,7 +9,7 @@ import {
   createTheme,
 } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
-import { SnackbarProvider, enqueueSnackbar } from 'notistack'
+import { SnackbarProvider } from 'notistack'
 import AddVideoModal from './components/AddVideoModal'
 
 const Container = styled.div`
@@ -29,6 +29,7 @@ function App() {
   const [darkMode, setDarkMode] = useState(true)
   const [showMenu, setShowMenu] = useState(false)
   const [open, setOpen] = useState(false)
+  const [search, setSearch] = useState('')
 
   const theme = createTheme({
     palette: {
@@ -53,9 +54,11 @@ function App() {
                 setOpen={setOpen}
                 showMenu={showMenu}
                 setShowMenu={setShowMenu}
+                setSearch={setSearch}
+                search={search}
               />
               <Wrapper onClick={() => setShowMenu(false)}>
-                <Outlet />
+                <Outlet context={[search]} />
               </Wrapper>
               <AddVideoModal open={open} setOpen={setOpen} />
             </Main>

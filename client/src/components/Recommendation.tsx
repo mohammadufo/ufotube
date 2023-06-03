@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
+import { Video } from '../types/public'
 import { phone } from '../utils/responsive'
 import CardComponent from './CardComponent'
 
@@ -29,7 +30,7 @@ const Recommendation = ({ tags }) => {
 
   return (
     <Container>
-      {videos.map((video) => (
+      {videos.map((video: Video) => (
         <CardComponent type="sm" key={video._id} video={video} />
       ))}
     </Container>

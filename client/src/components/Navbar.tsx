@@ -103,7 +103,7 @@ const UserWrapper = styled.div`
   gap: 0.5rem;
 `
 
-const Navbar = ({ showMenu, setShowMenu, setOpen }) => {
+const Navbar = ({ setShowMenu, setOpen, setSearch, search }) => {
   const { currentUser } = useSelector((state) => state.user)
   const dispatch = useDispatch()
 
@@ -140,10 +140,16 @@ const Navbar = ({ showMenu, setShowMenu, setOpen }) => {
               <SearchOutlinedIcon />
             </SearchIconWrapper>
             <StyledInputBase
+              onChange={(e) => setSearch(e.target.value)}
               placeholder="Search…"
               inputProps={{ 'aria-label': 'search' }}
             />
           </Search>
+          {search?.length > 0 && (
+            <Link to="search" style={{ textDecoration: 'none' }}>
+              <Button>Search</Button>
+            </Link>
+          )}
         </SearchBox>
         {currentUser ? (
           <UserWrapper>
