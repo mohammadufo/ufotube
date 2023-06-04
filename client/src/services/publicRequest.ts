@@ -2,7 +2,7 @@ import axios from 'axios'
 
 function api(method: string, url: string, params: any, data: any) {
   const axiosRequest = axios.create({
-    baseURL: import.meta.env.VITE_REACT_APP_HOST,
+    baseURL: '/api',
   })
 
   const headers: { Accept: string } = {
