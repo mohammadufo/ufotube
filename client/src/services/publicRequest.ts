@@ -2,8 +2,8 @@ import axios from 'axios'
 
 function api(method: string, url: string, params: any, data: any) {
   const axiosRequest = axios.create({
-    // baseURL: '/api',
-    baseURL: 'http://localhost:8800/api',
+    baseURL: '/api',
+    // baseURL: 'http://localhost:8800/api',
   })
 
   const headers: { Accept: string } = {
