@@ -7,6 +7,11 @@ import commentRoute from './routes/comments.js'
 import authRoute from './routes/auth.js'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
+import path from 'path'
+import { fileURLToPath } from 'url'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 const app = express()
 dotenv.config()
@@ -36,7 +41,12 @@ app.use((err, req, res, next) => {
   })
 })
 
-const PORT = 8800
+app.use(express.static(path.join(__dirname, '../client/dist')))
+app.get('*', (req, res) =>
+  res.sendFile(path.join(__dirname, '../client/dist/index.html'))
+)
+
+const PORT = parseInt(process.env.PORT || '8800', 10)
 app.listen(PORT, () => {
   connect()
   console.log(`Server is running on port ${PORT}`)
