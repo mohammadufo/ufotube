@@ -15,6 +15,8 @@ import Search from './pages/Search'
 import { Provider } from 'react-redux'
 import { persistor, store } from './redux/store'
 import { PersistGate } from 'redux-persist/lib/integration/react'
+import Page404 from './components/Page404'
+import TagPage from './pages/TagPage'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -27,6 +29,10 @@ const router = createBrowserRouter(
       <Route path="video">
         <Route path=":id" element={<Video />} />
       </Route>
+      <Route path="tags">
+        <Route path=":tags" element={<TagPage />} />
+      </Route>
+      <Route path="*" element={<Page404 />} />
     </Route>
   )
 )

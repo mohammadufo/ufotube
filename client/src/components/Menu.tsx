@@ -10,7 +10,6 @@ import SportsEsportsOutlinedIcon from '@mui/icons-material/SportsEsportsOutlined
 import SportsBasketballOutlinedIcon from '@mui/icons-material/SportsBasketballOutlined'
 import MovieOutlinedIcon from '@mui/icons-material/MovieOutlined'
 import ArticleOutlinedIcon from '@mui/icons-material/ArticleOutlined'
-import LiveTvOutlinedIcon from '@mui/icons-material/LiveTvOutlined'
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined'
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined'
 import FlagOutlinedIcon from '@mui/icons-material/FlagOutlined'
@@ -86,6 +85,12 @@ const Title = styled.h2`
 
 const Body = styled.div``
 
+const Footer = styled.div`
+  width: 100%;
+  border-top: 1px solid ${({ theme }) => theme.soft};
+  padding-top: 1rem;
+`
+
 const Menu = (props: any) => {
   const { darkMode, setDarkMode, showMenu } = props
 
@@ -155,30 +160,51 @@ const Menu = (props: any) => {
           )}
           <Hr />
           <Title>BEST OF UFOTUBE</Title>
-          <Item>
-            <LibraryMusicOutlinedIcon />
-            Music
-          </Item>
-          <Item>
-            <SportsBasketballOutlinedIcon />
-            Sports
-          </Item>
-          <Item>
-            <SportsEsportsOutlinedIcon />
-            Gaming
-          </Item>
-          <Item>
-            <MovieOutlinedIcon />
-            Movies
-          </Item>
-          <Item>
-            <ArticleOutlinedIcon />
-            News
-          </Item>
-          <Item>
-            <LiveTvOutlinedIcon />
-            Live
-          </Item>
+          <Link
+            to="/tags/music"
+            style={{ textDecoration: 'none', color: 'inherit' }}
+          >
+            <Item>
+              <LibraryMusicOutlinedIcon />
+              Music
+            </Item>
+          </Link>
+          <Link
+            to="/tags/sport"
+            style={{ textDecoration: 'none', color: 'inherit' }}
+          >
+            <Item>
+              <SportsBasketballOutlinedIcon />
+              Sports
+            </Item>
+          </Link>
+          <Link
+            to="/tags/gaming"
+            style={{ textDecoration: 'none', color: 'inherit' }}
+          >
+            <Item>
+              <SportsEsportsOutlinedIcon />
+              Gaming
+            </Item>
+          </Link>
+          <Link
+            to="/tags/movies"
+            style={{ textDecoration: 'none', color: 'inherit' }}
+          >
+            <Item>
+              <MovieOutlinedIcon />
+              Movies
+            </Item>
+          </Link>
+          <Link
+            to="/tags/news"
+            style={{ textDecoration: 'none', color: 'inherit' }}
+          >
+            <Item>
+              <ArticleOutlinedIcon />
+              News
+            </Item>
+          </Link>
           <Hr />
           <Item>
             <SettingsOutlinedIcon />
@@ -197,6 +223,7 @@ const Menu = (props: any) => {
             {darkMode ? 'Light' : 'Dark'} Mode
           </Item>
         </Body>
+        <Footer>Muhammad UFO</Footer>
       </Wrapper>
     </Container>
   )

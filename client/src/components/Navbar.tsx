@@ -21,6 +21,7 @@ import {
 } from '@mui/material'
 import { useState } from 'react'
 import { logout } from '../redux/userSlice'
+import { publicService } from '../services/publicRequest'
 
 const Container = styled.div`
   position: sticky;
@@ -122,9 +123,14 @@ const Navbar = (props: {
     setAnchorEl(null)
   }
 
-  const handleLogout = () => {
-    dispatch(logout())
-    handleClose()
+  const handleLogout = async () => {
+    try {
+      await publicService.api('POST', '/auth/logout', {}, {})
+      dispatch(logout())
+      handleClose()
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   const handleModal = () => {
