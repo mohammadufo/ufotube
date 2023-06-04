@@ -1,4 +1,3 @@
-import axios from 'axios'
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { publicService } from '../services/publicRequest'
@@ -18,12 +17,16 @@ const Container = styled.div`
   ${phone({ display: 'none' })}
 `
 
-const Recommendation = ({ tags }) => {
+const Recommendation = (props: { tags: string }) => {
   const [videos, setVideos] = useState([])
+
+  const { tags } = props
+
+  console.log(tags)
 
   useEffect(() => {
     const fetchVideos = async () => {
-      const res = await publicService.api(
+      const res: any = await publicService.api(
         'GET',
         `/videos/tags?tags=${tags}`,
         {},

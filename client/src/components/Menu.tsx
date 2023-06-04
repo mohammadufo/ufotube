@@ -86,8 +86,10 @@ const Title = styled.h2`
 
 const Body = styled.div``
 
-const Menu = ({ darkMode, setDarkMode, showMenu }) => {
-  const { currentUser } = useSelector((state) => state.user)
+const Menu = (props: any) => {
+  const { darkMode, setDarkMode, showMenu } = props
+
+  const { currentUser } = useSelector((state: any) => state.user)
 
   return (
     <Container

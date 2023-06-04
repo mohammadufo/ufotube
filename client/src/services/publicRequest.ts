@@ -1,11 +1,11 @@
 import axios from 'axios'
 
-function api(method, url, params, data) {
+function api(method: string, url: string, params: any, data: any) {
   const axiosRequest = axios.create({
     baseURL: import.meta.env.VITE_REACT_APP_HOST,
   })
 
-  let headers = {
+  const headers: { Accept: string } = {
     Accept: 'application/json',
   }
   return axiosRequest({
@@ -16,37 +16,15 @@ function api(method, url, params, data) {
     headers,
     withCredentials: true,
   })
-    .then((response) => {
+    .then((response: any) => {
       return handleAxiosResponse(response)
     })
-    .catch((error) => {
+    .catch((error: any) => {
       return handleAxiosResponse(error)
     })
 }
 
-function formDataApi(method, url, _data, file, fieldName) {
-  const axiosRequest = axios.create({
-    baseURL: import.meta.env.VITE_REACT_APP_HOST,
-  })
-
-  var newFormData = new FormData()
-  newFormData.append('data', JSON.stringify(_data))
-  newFormData.append(fieldName, file)
-
-  let data = newFormData
-  let headers = {
-    Accept: 'application/json',
-    'Content-Type': 'multipart/form-data',
-  }
-  return axiosRequest({ method, url, data, headers, withCredentials: true })
-    .then((response) => {
-      return handleAxiosResponse(response)
-    })
-    .catch((error) => {
-      return handleAxiosResponse(error)
-    })
-}
-function handleAxiosResponse(response) {
+function handleAxiosResponse(response: any) {
   return new Promise((resolve, reject) => {
     // const data = response.data
     switch (Math.floor(response.status / 100)) {
@@ -67,6 +45,5 @@ function handleAxiosResponse(response) {
 
 export const publicService = {
   api,
-  formDataApi,
   handleAxiosResponse,
 }

@@ -87,7 +87,7 @@ const SignIn = () => {
 
   const dispatch = useDispatch()
 
-  const { registerLoading, loading } = useSelector((state) => state.user)
+  const { registerLoading, loading } = useSelector((state: any) => state.user)
 
   const handleClickShowPassword = () => setShowPassword((show) => !show)
   const handleMouseDownPassword = (
@@ -111,10 +111,10 @@ const SignIn = () => {
 
   const signInformik = useFormik({
     initialValues: initialSignInValue,
-    onSubmit: async (values, { resetForm }) => {
+    onSubmit: async (values: any, { resetForm }: any) => {
       try {
         dispatch(loginStart())
-        const response = await publicService.api(
+        const response: any = await publicService.api(
           'POST',
           '/auth/signin',
           {},
@@ -125,19 +125,18 @@ const SignIn = () => {
         enqueueSnackbar(`Welcome back ${response.data.name} 👋🏻`, {
           variant: 'success',
           anchorOrigin: {
-            horizontal: 'top',
-            vertical: 'center',
+            horizontal: 'center',
+            vertical: 'top',
           },
         })
-        console.log(response.data)
       } catch (err) {
         console.log(err)
         dispatch(loginFailure())
         enqueueSnackbar(`oops! something went wrong 💀`, {
           variant: 'error',
           anchorOrigin: {
-            horizontal: 'top',
-            vertical: 'center',
+            horizontal: 'center',
+            vertical: 'top',
           },
         })
       }
@@ -146,10 +145,10 @@ const SignIn = () => {
   })
   const signUpformik = useFormik({
     initialValues: initialSignUpValue,
-    onSubmit: async (values, { resetForm }) => {
+    onSubmit: async (values: any, { resetForm }: any) => {
       try {
         dispatch(registerStart())
-        const response = await publicService.api(
+        const response: any = await publicService.api(
           'POST',
           '/auth/signup',
           {},
@@ -160,19 +159,18 @@ const SignIn = () => {
         enqueueSnackbar(`Welcome ${response.data.name} 💕`, {
           variant: 'success',
           anchorOrigin: {
-            horizontal: 'top',
-            vertical: 'center',
+            horizontal: 'center',
+            vertical: 'top',
           },
         })
-        console.log(response.data)
       } catch (err) {
         console.log(err)
         dispatch(registerFailure())
         enqueueSnackbar(`oops! something went wrong 💀`, {
           variant: 'error',
           anchorOrigin: {
-            horizontal: 'top',
-            vertical: 'center',
+            horizontal: 'center',
+            vertical: 'top',
           },
         })
       }
@@ -180,10 +178,10 @@ const SignIn = () => {
     validationSchema: signUpSchema,
   })
 
-  const googleSingIn = async (result) => {
+  const googleSingIn = async (result: any) => {
     try {
       dispatch(loginStart())
-      const response = await publicService.api(
+      const response: any = await publicService.api(
         'POST',
         '/auth/google',
         {},
@@ -197,8 +195,8 @@ const SignIn = () => {
       enqueueSnackbar(`Welcome ${response.data.name} 💕`, {
         variant: 'success',
         anchorOrigin: {
-          horizontal: 'top',
-          vertical: 'center',
+          horizontal: 'center',
+          vertical: 'top',
         },
       })
     } catch (err) {
@@ -207,8 +205,8 @@ const SignIn = () => {
       enqueueSnackbar(`oops! something went wrong 💀`, {
         variant: 'error',
         anchorOrigin: {
-          horizontal: 'top',
-          vertical: 'center',
+          horizontal: 'center',
+          vertical: 'top',
         },
       })
     }
@@ -216,16 +214,16 @@ const SignIn = () => {
 
   const signInWithGoogle = () => {
     signInWithPopup(auth, googleProvider)
-      .then((result) => {
+      .then((result: any) => {
         googleSingIn(result)
       })
-      .catch((err) => {
+      .catch(() => {
         dispatch(loginFailure())
         enqueueSnackbar(`oops! something went wrong 💀`, {
           variant: 'error',
           anchorOrigin: {
-            horizontal: 'top',
-            vertical: 'center',
+            horizontal: 'center',
+            vertical: 'top',
           },
         })
       })

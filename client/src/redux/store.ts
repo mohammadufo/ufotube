@@ -13,7 +13,6 @@ import {
   REGISTER,
 } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
-import { PersistGate } from 'redux-persist/integration/react'
 
 const persistConfig = {
   key: 'root',
@@ -30,7 +29,7 @@ const persistedReducer = persistReducer(persistConfig, rootReducer)
 
 export const store = configureStore({
   reducer: persistedReducer,
-  middleware: (getDefaultMiddleware) =>
+  middleware: (getDefaultMiddleware: any) =>
     getDefaultMiddleware({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],

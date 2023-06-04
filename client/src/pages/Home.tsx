@@ -26,14 +26,13 @@ const Home = (props: { type?: string }) => {
   const fetchData = async () => {
     try {
       setLoading(true)
-      const res = await publicService.api(
+      const res: any = await publicService.api(
         'GET',
         `/videos/${props.type}`,
         {},
         {}
       )
       setVideos(res.data)
-      console.log(res.data)
       setLoading(false)
     } catch (err) {
       console.log(err)

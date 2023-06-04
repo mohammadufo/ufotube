@@ -30,42 +30,42 @@ export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    loginStart: (state) => {
+    loginStart: (state: UserSlice) => {
       state.loading = true
     },
-    loginSuccess: (state, action: PayloadAction<User>) => {
+    loginSuccess: (state: UserSlice, action: PayloadAction<User>) => {
       state.loading = false
       state.currentUser = action.payload
       // localStorage.setItem('user', JSON.stringify(action.payload))
     },
-    loginFailure: (state) => {
+    loginFailure: (state: UserSlice) => {
       state.loading = false
       state.error = true
     },
-    registerStart: (state) => {
+    registerStart: (state: UserSlice) => {
       state.registerLoading = true
     },
-    registerSuccess: (state, action: PayloadAction<User>) => {
+    registerSuccess: (state: UserSlice, action: PayloadAction<User>) => {
       state.registerLoading = false
       state.currentUser = action.payload
       // localStorage.setItem('user', JSON.stringify(action.payload))
     },
-    registerFailure: (state) => {
+    registerFailure: (state: UserSlice) => {
       state.registerLoading = false
       state.error = true
     },
-    logout: (state) => {
+    logout: (state: UserSlice) => {
       state.loading = false
       state.error = false
       state.currentUser = null
       state.registerLoading = false
       localStorage.removeItem('persist:root')
     },
-    subscription: (state, action) => {
+    subscription: (state: any, action: PayloadAction<string>) => {
       if (state.currentUser.subscribedUsers.includes(action.payload)) {
         state.currentUser.subscribedUsers.splice(
           state.currentUser.subscribedUsers.findIndex(
-            (channelId) => channelId === action.payload
+            (channelId: string) => channelId === action.payload
           ),
           1
         )

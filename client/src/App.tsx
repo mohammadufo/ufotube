@@ -1,8 +1,10 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
 import { useState } from 'react'
 import styled, { ThemeProvider } from 'styled-components'
 import Menu from './components/Menu'
 import Navbar from './components/Navbar'
-import { darkTheme, lightTheme } from './utils/Theme'
+import { darkTheme, lightTheme } from './utils/theme'
 import { Outlet } from 'react-router-dom'
 import {
   ThemeProvider as MuiThemeProvider,

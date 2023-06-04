@@ -1,3 +1,6 @@
+import { UserSlice } from '../redux/userSlice'
+import { VideoSlice } from '../redux/videoSlice'
+
 export type Video = {
   _id: string
   userId: string
@@ -20,4 +23,9 @@ export type commentObj = {
   desc: string
   createdAt: string
   updatedAt: string
+}
+
+export type State = {
+  user: UserSlice | undefined
+  video: VideoSlice | undefined
 }

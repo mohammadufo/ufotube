@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { publicService } from '../services/publicRequest'
 import { commentObj } from '../types/public'
@@ -40,11 +40,11 @@ const Text = styled.span`
 `
 
 const Comment = (props: { commentObj: commentObj }) => {
-  const [user, setUser] = useState({})
+  const [user, setUser] = useState<any>({})
 
   const fetchUser = async () => {
     try {
-      const res = await publicService.api(
+      const res: any = await publicService.api(
         'GET',
         `/users/find/${props.commentObj.userId}`,
         {},

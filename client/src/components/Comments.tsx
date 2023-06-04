@@ -1,3 +1,5 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
 import styled from 'styled-components'
 import Comment from './Comment'
 import { TextField, IconButton } from '@mui/material'
@@ -22,7 +24,10 @@ const Avatar = styled.img`
   border-radius: 50%;
 `
 
-const Comments = (props: { videoId: string; img: string }) => {
+const Comments = (props: {
+  videoId: string | undefined
+  img: string | undefined
+}) => {
   const [commentList, setCommentList] = useState([])
   const [text, setText] = useState('')
 
@@ -45,7 +50,7 @@ const Comments = (props: { videoId: string; img: string }) => {
     fetchComments()
   }, [props.videoId])
 
-  const handleAddComment = async (e) => {
+  const handleAddComment = async (e: any) => {
     e.preventDefault()
     try {
       const res = await publicService.api(
@@ -58,12 +63,11 @@ const Comments = (props: { videoId: string; img: string }) => {
         }
       )
       setCommentList([...commentList, res.data])
-      console.log('new  cm --->', res.data)
       enqueueSnackbar('your comment is added! 😇', {
         variant: 'success',
         anchorOrigin: {
-          horizontal: 'top',
-          vertical: 'center',
+          horizontal: 'center',
+          vertical: 'top',
         },
       })
     } catch (err) {

@@ -40,11 +40,11 @@ const Desc = styled.div`
 `
 
 const CardComponent = (props: { type?: string; video: Video }) => {
-  const [user, setUser] = useState({})
+  const [user, setUser] = useState<any>({})
 
   const fetchData = async () => {
     try {
-      const res = await publicService.api(
+      const res: any = await publicService.api(
         'GET',
         `users/find/${props.video.userId}`,
         {},

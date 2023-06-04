@@ -103,8 +103,14 @@ const UserWrapper = styled.div`
   gap: 0.5rem;
 `
 
-const Navbar = ({ setShowMenu, setOpen, setSearch, search }) => {
-  const { currentUser } = useSelector((state) => state.user)
+const Navbar = (props: {
+  setShowMenu: any
+  setOpen: any
+  setSearch: any
+  search: string
+}) => {
+  const { setShowMenu, setOpen, setSearch, search } = props
+  const { currentUser } = useSelector((state: any) => state.user)
   const dispatch = useDispatch()
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)

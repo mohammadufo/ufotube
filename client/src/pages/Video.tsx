@@ -118,10 +118,10 @@ const MobileContainer = styled.div`
 `
 
 const Video = () => {
-  const [channel, setChannel] = useState({})
+  const [channel, setChannel] = useState<any>({})
 
-  const { currentUser } = useSelector((state) => state.user)
-  const { currentVideo, loading } = useSelector((state) => state.video)
+  const { currentUser } = useSelector((state: any) => state.user)
+  const { currentVideo, loading } = useSelector((state: any) => state.video)
 
   const dispatch = useDispatch()
 
@@ -129,19 +129,19 @@ const Video = () => {
   const fetchData = async () => {
     try {
       dispatch(fetchStart())
-      const videoRes = await publicService.api(
+      const videoRes: any = await publicService.api(
         'GET',
         `/videos/find/${id}`,
         {},
         {}
       )
-      const channelRes = await publicService.api(
+      const channelRes: any = await publicService.api(
         'GET',
         `/users/find/${videoRes?.data?.userId}`,
         {},
         {}
       )
-      console.log('video res ---->', videoRes.data)
+      // console.log('video res ---->', videoRes.data)
       // console.log('channel res ---->', channelRes.data)
       dispatch(fetchSuccess(videoRes.data))
       setChannel(channelRes.data)
