@@ -23,6 +23,7 @@ import { Avatar, IconButton, Button as MuiButton } from '@mui/material'
 import { subscription } from '../redux/userSlice'
 import Recommendation from '../components/Recommendation'
 import { phone } from '../utils/responsive'
+import { enqueueSnackbar } from 'notistack'
 
 const Container = styled.div`
   display: flex;
@@ -143,7 +144,7 @@ const Video = () => {
       )
       dispatch(fetchSuccess(videoRes.data))
       setChannel(channelRes.data)
-    } catch (err) {
+    } catch (err: any) {
       console.log(err)
       dispatch(fetchFailure())
     }
@@ -154,30 +155,61 @@ const Video = () => {
   }, [id, dispatch])
 
   const handleLike = async () => {
-    await publicService.api('PUT', `/users/like/${currentVideo?._id}`, {}, {})
-    dispatch(like(currentUser?._id))
+    try {
+      await publicService.api('PUT', `/users/like/${currentVideo?._id}`, {}, {})
+
+      dispatch(like(currentUser?._id))
+    } catch (err: any) {
+      enqueueSnackbar(err, {
+        variant: 'error',
+        anchorOrigin: {
+          horizontal: 'center',
+          vertical: 'top',
+        },
+      })
+    }
   }
   const handleDisLike = async () => {
-    await publicService.api(
-      'PUT',
-      `/users/dislike/${currentVideo?._id}`,
-      {},
-      {}
-    )
-    dispatch(disLike(currentUser?._id))
+    try {
+      await publicService.api(
+        'PUT',
+        `/users/dislike/${currentVideo?._id}`,
+        {},
+        {}
+      )
+      dispatch(disLike(currentUser?._id))
+    } catch (err: any) {
+      enqueueSnackbar(err, {
+        variant: 'error',
+        anchorOrigin: {
+          horizontal: 'center',
+          vertical: 'top',
+        },
+      })
+    }
   }
 
   const handleSubscribe = async () => {
-    currentUser?.subscribedUsers?.includes(channel._id)
-      ? await publicService.api('PUT', `/users/sub/${channel._id}`, {}, {})
-      : await await publicService.api(
-          'PUT',
-          `/users/unsub/${channel._id}`,
-          {},
-          {}
-        )
+    try {
+      currentUser?.subscribedUsers?.includes(channel._id)
+        ? await publicService.api('PUT', `/users/sub/${channel._id}`, {}, {})
+        : await await publicService.api(
+            'PUT',
+            `/users/unsub/${channel._id}`,
+            {},
+            {}
+          )
 
-    dispatch(subscription(channel._id))
+      dispatch(subscription(channel._id))
+    } catch (err: any) {
+      enqueueSnackbar(err, {
+        variant: 'error',
+        anchorOrigin: {
+          horizontal: 'center',
+          vertical: 'top',
+        },
+      })
+    }
   }
 
   return (
@@ -268,7 +300,11 @@ const Video = () => {
               </MuiButton>
             </Channel>
             <Hr />
-            <Comments videoId={currentVideo?._id} img={currentUser?.img} />
+            <Comments
+              videoId={currentVideo?._id}
+              img={currentUser?.img}
+              name={currentUser?.name}
+            />
           </Content>
           <Recommendation tags={currentVideo?.tags.join(',')} />
         </>

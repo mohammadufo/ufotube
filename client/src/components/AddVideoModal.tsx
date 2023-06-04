@@ -178,10 +178,10 @@ export default function AddVideoModal({ open, setOpen }) {
           vertical: 'center',
         },
       })
-    } catch (err) {
+    } catch (err: any) {
       console.log(err)
       setLoading(false)
-      enqueueSnackbar('oh! something went wrong 💥', {
+      enqueueSnackbar(err || 'oh! something went wrong 💥', {
         variant: 'error',
         anchorOrigin: {
           horizontal: 'top',

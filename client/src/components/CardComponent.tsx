@@ -52,7 +52,7 @@ const CardComponent = (props: { type?: string; video: Video }) => {
       )
 
       setUser(res.data)
-    } catch (err) {
+    } catch (err: any) {
       console.log(err)
     }
   }
@@ -109,7 +109,7 @@ const CardComponent = (props: { type?: string; video: Video }) => {
                     <CardWrapper>
                       <AvatarImg>
                         <Avatar src={user.img} aria-label="recipe">
-                          {user.name}
+                          {user?.name?.split('')[0].toUpperCase()}
                         </Avatar>
                       </AvatarImg>
 

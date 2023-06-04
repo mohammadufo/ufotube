@@ -132,7 +132,7 @@ const SignIn = () => {
           },
         })
         navigate('/')
-      } catch (err) {
+      } catch (err: any) {
         console.log(err)
         dispatch(loginFailure())
         enqueueSnackbar(`oops! something went wrong 💀`, {
@@ -167,7 +167,7 @@ const SignIn = () => {
           },
         })
         navigate('/')
-      } catch (err) {
+      } catch (err: any) {
         console.log(err)
         dispatch(registerFailure())
         enqueueSnackbar(`oops! something went wrong 💀`, {
@@ -203,7 +203,7 @@ const SignIn = () => {
           vertical: 'top',
         },
       })
-    } catch (err) {
+    } catch (err: any) {
       console.log(err)
       dispatch(loginFailure())
       enqueueSnackbar(`oops! something went wrong 💀`, {

@@ -34,7 +34,7 @@ const Home = (props: { type?: string }) => {
       )
       setVideos(res.data)
       setLoading(false)
-    } catch (err) {
+    } catch (err: any) {
       console.log(err)
       setLoading(false)
     }

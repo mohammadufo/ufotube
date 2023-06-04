@@ -3,6 +3,7 @@ import axios from 'axios'
 function api(method: string, url: string, params: any, data: any) {
   const axiosRequest = axios.create({
     baseURL: '/api',
+    // baseURL: 'http://localhost:8800/api',
   })
 
   const headers: { Accept: string } = {
@@ -26,19 +27,23 @@ function api(method: string, url: string, params: any, data: any) {
 
 function handleAxiosResponse(response: any) {
   return new Promise((resolve, reject) => {
-    // const data = response.data
     switch (Math.floor(response.status / 100)) {
       case 2:
         if (!response.status) {
-          return reject(response.message)
+          return reject('slm')
         }
         return resolve(response.data)
-      case 4:
-        return reject(response.message)
-      case 5:
-        return reject('global.error_500')
       default:
-        return reject('global.error')
+        if (
+          response.response.status === 401 ||
+          response.response.status === 403
+        ) {
+          reject(response.response.data.message)
+        } else {
+          reject(
+            'Sorry, Something went wrong! and I do not know what is that! 💀'
+          )
+        }
     }
   })
 }

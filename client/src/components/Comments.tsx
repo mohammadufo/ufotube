@@ -2,7 +2,7 @@
 // @ts-nocheck
 import styled from 'styled-components'
 import Comment from './Comment'
-import { TextField, IconButton } from '@mui/material'
+import { TextField, IconButton, Avatar } from '@mui/material'
 import SendIcon from '@mui/icons-material/Send'
 import { useEffect, useState } from 'react'
 import { publicService } from '../services/publicRequest'
@@ -17,16 +17,10 @@ const NewComment = styled.div`
   align-items: stretch;
   gap: 10px;
 `
-
-const Avatar = styled.img`
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-`
-
 const Comments = (props: {
   videoId: string | undefined
   img: string | undefined
+  name: string | undefined
 }) => {
   const [commentList, setCommentList] = useState([])
   const [text, setText] = useState('')
@@ -40,7 +34,7 @@ const Comments = (props: {
         {}
       )
       setCommentList(res.data)
-    } catch (err) {
+    } catch (err: any) {
       console.log(err)
     }
   }
@@ -69,15 +63,23 @@ const Comments = (props: {
           vertical: 'top',
         },
       })
-    } catch (err) {
-      console.log(err)
+    } catch (err: any) {
+      enqueueSnackbar(err, {
+        variant: 'error',
+        anchorOrigin: {
+          horizontal: 'top',
+          vertical: 'center',
+        },
+      })
     }
   }
 
   return (
     <Container>
       <NewComment>
-        <Avatar src={props.img} />
+        <Avatar src={props.img}>
+          {props?.name?.split('')[0].toUpperCase() || '?'}
+        </Avatar>
         <TextField
           onChange={(e) => setText(e.target.value)}
           fullWidth

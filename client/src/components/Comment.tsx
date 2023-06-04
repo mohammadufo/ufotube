@@ -3,17 +3,12 @@ import styled from 'styled-components'
 import { publicService } from '../services/publicRequest'
 import { commentObj } from '../types/public'
 import { format } from 'timeago.js'
+import Avatar from '@mui/material/Avatar'
 
 const Container = styled.div`
   display: flex;
   gap: 10px;
   margin: 30px 0px;
-`
-
-const Avatar = styled.img`
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
 `
 
 const Details = styled.div`
@@ -51,7 +46,8 @@ const Comment = (props: { commentObj: commentObj }) => {
         {}
       )
       setUser(res.data)
-    } catch (err) {
+      console.log(res.data)
+    } catch (err: any) {
       console.log(err)
     }
   }
@@ -62,7 +58,7 @@ const Comment = (props: { commentObj: commentObj }) => {
 
   return (
     <Container>
-      <Avatar src={user.img} />
+      <Avatar src={user?.img}>{user?.name?.split('')[0].toUpperCase()}</Avatar>
       <Details>
         <Name>
           {user.name} <Date>{format(props.commentObj.createdAt)}</Date>
