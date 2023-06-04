@@ -21,9 +21,6 @@ const Recommendation = (props: { tags: string }) => {
   const [videos, setVideos] = useState([])
 
   const { tags } = props
-
-  console.log(tags)
-
   useEffect(() => {
     const fetchVideos = async () => {
       const res: any = await publicService.api(

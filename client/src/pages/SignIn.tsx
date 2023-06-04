@@ -29,6 +29,7 @@ import {
 } from '../redux/userSlice'
 import { auth, googleProvider } from '../utils/firebase'
 import { signInWithPopup } from 'firebase/auth'
+import { useNavigate } from 'react-router-dom'
 
 const Container = styled.div`
   display: flex;
@@ -86,6 +87,7 @@ const SignIn = () => {
   const [showSignUpPassword, setShowSignUpPassword] = useState(false)
 
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const { registerLoading, loading } = useSelector((state: any) => state.user)
 
@@ -129,6 +131,7 @@ const SignIn = () => {
             vertical: 'top',
           },
         })
+        navigate('/')
       } catch (err) {
         console.log(err)
         dispatch(loginFailure())
@@ -163,6 +166,7 @@ const SignIn = () => {
             vertical: 'top',
           },
         })
+        navigate('/')
       } catch (err) {
         console.log(err)
         dispatch(registerFailure())

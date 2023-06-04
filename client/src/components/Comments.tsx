@@ -39,7 +39,6 @@ const Comments = (props: {
         {},
         {}
       )
-      console.log(res.data)
       setCommentList(res.data)
     } catch (err) {
       console.log(err)
