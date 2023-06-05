@@ -9,6 +9,7 @@ const Container = styled.div`
   overflow-y: scroll !important;
   padding: 22px 44px;
   width: 100%;
+  ${phone({ padding: '10px' })}
 `
 
 const Content = styled.div`

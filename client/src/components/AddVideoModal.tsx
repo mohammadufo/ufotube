@@ -25,12 +25,14 @@ import { useNavigate } from 'react-router-dom'
 import { enqueueSnackbar } from 'notistack'
 import { Typography, CircularProgress } from '@mui/material'
 import DoneIcon from '@mui/icons-material/Done'
+import { phone } from '../utils/responsive'
 
 const Container = styled.div`
   width: 30rem;
   display: flex;
   flex-direction: column;
   gap: 2rem;
+  ${phone({ width: '18rem' })}
 `
 const UploadBox = styled.div`
   display: flex;
@@ -212,6 +214,7 @@ export default function AddVideoModal({ open, setOpen }) {
                 component="label"
                 color="primary"
                 aria-label="add"
+                disabled={videoPerc > 0}
               >
                 <>
                   {videoPerc > 0 ? (
@@ -237,9 +240,9 @@ export default function AddVideoModal({ open, setOpen }) {
               {videoPerc > 0 ? (
                 <>
                   {videoPerc === 100 ? (
-                    <Typography color="success">SuccessFul!</Typography>
+                    <Typography sx={{ color: 'green' }}>SuccessFul!</Typography>
                   ) : (
-                    <Span>{'Uploading:' + videoPerc}</Span>
+                    <Span>{'Uploading : ' + videoPerc + ' %'}</Span>
                   )}
                 </>
               ) : (
@@ -271,6 +274,7 @@ export default function AddVideoModal({ open, setOpen }) {
                 component="label"
                 color="primary"
                 aria-label="add"
+                disabled={imagePerc > 0}
               >
                 <>
                   {imagePerc > 0 ? (
@@ -295,10 +299,10 @@ export default function AddVideoModal({ open, setOpen }) {
               </Fab>
               {imagePerc > 0 ? (
                 <>
-                  {videoPerc === 100 ? (
-                    <Typography color="success">SuccessFul!</Typography>
+                  {imagePerc === 100 ? (
+                    <Typography sx={{ color: 'green' }}>SuccessFul!</Typography>
                   ) : (
-                    <Span>{'Uploading:' + videoPerc}</Span>
+                    <Span>{'Uploading : ' + videoPerc + '%'}</Span>
                   )}
                 </>
               ) : (
@@ -313,6 +317,7 @@ export default function AddVideoModal({ open, setOpen }) {
             variant="contained"
             autoFocus
             onClick={handleUpload}
+            disabled={loading}
           >
             {loading ? <CircularProgress color="inherit" /> : 'Upload'}
           </Button>
